@@ -24,7 +24,7 @@ public class AuthRestController {
         Usuario usuario = usuarioService.autenticar(request.getUsername(), request.getPassword());
 
         if (usuario != null) {
-            String token = jwtUtil.generateToken(usuario.getUsuario());
+            String token = jwtUtil.generateToken(usuario.getUsuario(), usuario.getRol(), usuario.getNombre());
             return new JwtResponse(token, usuario);
         } else {
             return new JwtResponse(null, null);

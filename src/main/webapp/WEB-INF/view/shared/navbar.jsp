@@ -5,7 +5,7 @@
 
 <%
     String section = (String) request.getAttribute("currentSection");
-    Usuario usuario = (Usuario) session.getAttribute("user");
+    Usuario usuario = (Usuario) request.getAttribute("user");
 
     if (section == null) {
         section = "";

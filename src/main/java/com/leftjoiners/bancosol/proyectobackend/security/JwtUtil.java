@@ -13,9 +13,13 @@ import java.util.Date;
 public class JwtUtil {
     private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 10;
+    public String generateToken(String username, String rol, String nombre) {
+        // Spring Security requiere que los roles tengan el prefijo "ROLE_"
+        String rolFormateado = "ROLE_" + rol.toUpperCase();
 
-    public String generateToken(String username) {
         return Jwts.builder()
+                .claim("rol", rolFormateado)
+                .claim("nombre", nombre)
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
@@ -25,6 +29,22 @@ public class JwtUtil {
 
     public String extractUsername(String token) {
         return getClaims(token).getSubject();
+    }
+
+    public String extractRol(String token) {
+        try {
+            return getClaims(token).get("rol", String.class);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public String extractNombre(String token) {
+        try {
+            return getClaims(token).get("nombre", String.class);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public boolean validateToken(String token) {

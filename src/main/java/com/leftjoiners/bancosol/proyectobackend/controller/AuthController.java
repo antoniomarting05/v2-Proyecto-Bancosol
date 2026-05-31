@@ -20,8 +20,6 @@ import java.util.Optional;
 @Controller
 @AllArgsConstructor
 public class AuthController {
-
-    // Las dependencias se marcan como final
     private final UsuarioService usuarioService;
     private final JwtUtil jwtUtil;
 
@@ -34,12 +32,11 @@ public class AuthController {
     public String doLogin(@RequestParam("username") String username,
                           @RequestParam("password") String password,
                           HttpServletResponse response,
-                          HttpSession session,
                           Model model) {
         Usuario usuario = usuarioService.autenticar(username, password);
 
         if (usuario != null) {
-            String token = jwtUtil.generateToken(username);
+            String token = jwtUtil.generateToken(username, usuario.getRol(), usuario.getNombre());
 
             Cookie cookie = new Cookie("jwtToken", token);
             cookie.setHttpOnly(true);
@@ -47,9 +44,11 @@ public class AuthController {
             cookie.setMaxAge(60 * 60 * 10);
             response.addCookie(cookie);
 
-            session.setAttribute("user", usuario);
-
-            return "redirect:/campanyas";
+            if (usuario.getRol().equals("ADMIN")){
+                return "redirect:/campanyas";
+            } else {
+                return "redirect:/turnos";
+            }
         } else {
             model.addAttribute("error", "Usuario o contraseña incorrectos");
             return "auth";
@@ -63,8 +62,6 @@ public class AuthController {
         cookie.setHttpOnly(true);
         cookie.setMaxAge(0);
         response.addCookie(cookie);
-
-        session.invalidate();
 
         return "redirect:/";
     }
