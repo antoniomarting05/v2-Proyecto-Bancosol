@@ -26,16 +26,6 @@ import java.util.List;
 @Controller
 @AllArgsConstructor
 public class CampanyasController {
-
-    @Autowired
-    private CampanyaRepository campanyaRepo;
-
-    @Autowired
-    private TipoCampanyasRepository tipoCampanyaRepo;
-
-    @Autowired
-    private CadenaRepository cadenasRepo;
-
     private final CampanyasService campanyasService;
     private final TipoCampanyaService tipoCampanyaService;
     private final CadenaService cadenaService;

@@ -81,6 +81,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 Usuario usuarioInfo =  new Usuario();
                 usuarioInfo.setUsuario(username);
                 usuarioInfo.setNombre(nombre != null ? nombre : "Usuario");
+                usuarioInfo.setRol(rol);
 
                 request.setAttribute("user", usuarioInfo);
             }

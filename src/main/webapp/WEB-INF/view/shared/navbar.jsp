@@ -20,15 +20,6 @@
         <p><%=usuario.getNombre()%></p>
 
         <div class="user-section">
-            <button class="icon-btn">
-                <i class="ri-notification-3-line"></i>
-            </button>
-            <button class="icon-btn">
-                <i class="ri-settings-3-line"></i>
-            </button>
-            <button class="icon-btn">
-                <i class="ri-question-line"></i>
-            </button>
             <div class="user-avatar"><%=usuario.getNombre().substring(0,1)%></div>
         </div>
     </div>

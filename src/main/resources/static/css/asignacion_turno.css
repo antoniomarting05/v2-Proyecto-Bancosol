@@ -176,5 +176,10 @@
 	background-color: #fef2f2;
 }
 
-
+#create-button:disabled {
+	background-color: #e2e8f0;
+	color: #94a3b8;
+	cursor: not-allowed;
+	pointer-events: none;
+}
 

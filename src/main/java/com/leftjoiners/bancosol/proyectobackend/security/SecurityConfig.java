@@ -34,6 +34,8 @@ public class SecurityConfig {
                         .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
                         .requestMatchers("/", "/auth", "/login", "/api/auth/**", "/css/**", "/images/**").permitAll()
                         .requestMatchers("/campanyas").hasRole("ADMIN")
+                        .requestMatchers("/turnos/crearTurno").hasAnyRole("ADMIN", "COORD")
+                        .requestMatchers("/turnos/guardarTurno").hasAnyRole("ADMIN", "COORD")
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex
@@ -47,14 +49,11 @@ public class SecurityConfig {
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-                // --- NUEVO: CONFIGURACIÓN NATIVA DE LOGOUT ---
                 .logout(logout -> logout
                         .logoutUrl("/logout") // Escucha esta ruta
                         .deleteCookies("jwtToken") // Borra mágicamente nuestra "pulsera"
                         .logoutSuccessUrl("/") // Nos manda de vuelta al inicio
                 )
-                // ---------------------------------------------
-
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

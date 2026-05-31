@@ -1,5 +1,6 @@
 <%@ page import="com.leftjoiners.bancosol.proyectobackend.dto.Turno" %>
 <%@ page import="com.leftjoiners.bancosol.proyectobackend.dto.TiendaCampanya" %>
+<%@ page import="com.leftjoiners.bancosol.proyectobackend.dto.Usuario" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     Integer id = (Integer) request.getAttribute("id");
@@ -8,6 +9,7 @@
     Integer linealActual = (Integer) request.getAttribute("linealActual");
     TiendaCampanya tienda = (TiendaCampanya) request.getAttribute("tienda");
     Turno asignacionTurno = (Turno) request.getAttribute("asignacionTurno");
+    Usuario usuario = (Usuario) request.getAttribute("user");
 
 
 %>
@@ -95,6 +97,12 @@
     </div>
 </div>
 <div id="button-container">
-    <button id="create-button"><%=asignacionTurno == null ? "Crear" : "Editar"%></button>
+    <%
+        boolean puedeEditar = usuario != null && usuario.getRol() != null &&
+                (usuario.getRol().equals("ROLE_ADMIN") || usuario.getRol().equals("ROLE_COORD"));
+    %>
+    <button id="create-button" <%=puedeEditar ? "" : "disabled"%>>
+        <%=asignacionTurno == null ? "Crear" : "Editar"%>
+    </button>
     <button id="cancel-button">Cancelar</button>
 </div>
