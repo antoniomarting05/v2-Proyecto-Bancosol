@@ -20,6 +20,7 @@
     List<ZonaEntity> listaZonas = (List<ZonaEntity>) request.getAttribute("zonas");
     List<MunicipioEntity> listaMunicipios = (List<MunicipioEntity>) request.getAttribute("municipios");
     List<LocalidadEntity> listaLocalidades = (List<LocalidadEntity>) request.getAttribute("localidades");
+    List<DistritoEntity> listaDistritos = (List<DistritoEntity>) request.getAttribute("distritos");
 
     List<UsuarioEntity> listaCoordinadores = (List<UsuarioEntity>) request.getAttribute("coordinadores");
 
@@ -83,11 +84,33 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="domicilio">Domicilio / Dirección</label>
-                        <input id="domicilio" type="text" name="domicilio"
-                               value="<%= editando && tiendaActual != null ? tiendaActual.getDomicilio() : "" %>"
-                               required placeholder="Calle, número, código postal...">
+                    <div class="form-row">
+                        <div class="form-group" style="flex: 2;">
+                            <label for="domicilio">Domicilio / Dirección</label>
+                            <input id="domicilio" type="text" name="domicilio"
+                                   value="<%= editando && tiendaActual != null && tiendaActual.getDomicilio() != null ? tiendaActual.getDomicilio() : "" %>"
+                                   required placeholder="Calle, número...">
+                        </div>
+
+                        <div class="form-group" style="flex: 1;">
+                            <label for="codigoPostal">Código Postal</label>
+                            <input id="codigoPostal" type="number" name="codigoPostal"
+                                   value="<%= editando && tiendaActual != null && tiendaActual.getCp() != null ? tiendaActual.getCp() : "" %>"
+                                   required placeholder="Ej. 29010">
+                        </div>
+
+                        <div class="form-group" id="contenedorDistrito" style="flex: 1; display: none;">
+                            <label for="distrito">Distrito</label>
+                            <select id="distrito" name="distritoId" class="campanya-select">
+                                <option value="">Selecciona un distrito</option>
+                                <% if(listaDistritos != null) { for (DistritoEntity d : listaDistritos) { %>
+                                <option value="<%= d.getId() %>"
+                                        <%= (editando && tiendaActual != null && tiendaActual.getDistrito() != null && tiendaActual.getDistrito().getId().equals(d.getId())) ? "selected" : "" %>>
+                                    <%= d.getNombre() %>
+                                </option>
+                                <% } } %>
+                            </select>
+                        </div>
                     </div>
                 </section>
 
@@ -216,9 +239,24 @@
         const municipioSelect = document.getElementById('municipio');
         const localidadSelect = document.getElementById('localidad');
 
+        //Para verificar si es MALAGA CAPITAL o no
+        const contenedorDistrito = document.getElementById('contenedorDistrito');
+
         // Guardamos copias originales
         const todosLosMunicipios = Array.from(municipioSelect.querySelectorAll('option'));
         const todasLasLocalidades = Array.from(localidadSelect.querySelectorAll('option'));
+
+        function comprobarCapital() {
+            // Cogemos la opción que está seleccionada ahora mismo
+            const opcionSeleccionada = zonaSelect.options[zonaSelect.selectedIndex];
+
+            // Comprobamos si el texto dice "Málaga" (ignorando mayúsculas)
+            if (opcionSeleccionada && opcionSeleccionada.text.trim().toLowerCase() === 'málaga capital') {
+                contenedorDistrito.style.display = 'block'; // Lo mostramos
+            } else {
+                contenedorDistrito.style.display = 'none';  // Lo ocultamos
+            }
+        }
 
         function filtrarMunicipios() {
             const zonaId = zonaSelect.value;
@@ -230,6 +268,7 @@
                 municipioSelect.disabled = true;
                 todosLosMunicipios[0].textContent = "Primero selecciona una zona";
                 filtrarLocalidades(); // Si se borra la zona, también se bloquea la localidad
+                comprobarCapital();
                 return;
             }
 
@@ -244,6 +283,7 @@
 
             // Cada vez que cambiamos la zona, reseteamos las localidades
             filtrarLocalidades();
+            comprobarCapital();
         }
 
         function filtrarLocalidades() {
@@ -266,11 +306,16 @@
                     localidadSelect.appendChild(opcion);
                 }
             });
+
+            comprobarCapital();
         }
 
         // Asignamos los eventos
         zonaSelect.addEventListener('change', filtrarMunicipios);
-        municipioSelect.addEventListener('change', filtrarLocalidades);
+        municipioSelect.addEventListener('change', function() {
+            filtrarLocalidades();
+            comprobarCapital();
+        });
 
         // --- Lógica para modo "Editar" ---
         if (zonaSelect.value) {
@@ -281,6 +326,7 @@
             filtrarLocalidades();
             // Forzamos la selección de la localidad
             localidadSelect.value = "<%= tiendaActual.getLocalidad().getId() %>";
+            comprobarCapital();
             <% } %>
         }
     });

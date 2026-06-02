@@ -41,6 +41,9 @@ public class TiendasController {
     @Autowired
     protected CampanyaRepository campanyaRepository;
 
+    @Autowired
+    protected DistritoRepository distritoRepository;
+
     @GetMapping("")
     public String doTiendas(Model model,
                             @RequestParam(value = "tiendas", required = false) List<TiendaEntity> tiendasFiltradas) {
@@ -102,6 +105,7 @@ public class TiendasController {
         model.addAttribute("zonas", zonaRepository.findAll());
         model.addAttribute("municipios", municipioRepository.findAll());
         model.addAttribute("localidades", localidadRepository.findAll());
+        model.addAttribute("distritos", distritoRepository.findAll());
 
         model.addAttribute("coordinadores", usuarioRepository.findCoordinadores());
 
@@ -114,10 +118,12 @@ public class TiendasController {
             @RequestParam("nombre") String nombre,
             @RequestParam(value = "lineales", required = false) Integer lineales,
             @RequestParam("domicilio") String domicilio,
+            @RequestParam(value = "codigoPostal", required = false) String codigoPostal,
+            @RequestParam(value = "distritoId", required = false) Integer distritoId,
             @RequestParam("cadenaId") Integer cadenaId,
             @RequestParam("localidadId") Integer localidadId,
             @RequestParam(value = "coordinadorPrimaveraId", required = false) Integer coordinadorPrimaveraId,
-            @RequestParam(value = "coordinadorGRId", required = false) Integer coordinadorGRId) { //addaadaddadaddad
+            @RequestParam(value = "coordinadorGRId", required = false) Integer coordinadorGRId) {
 
         TiendaEntity tienda;
 
@@ -132,10 +138,20 @@ public class TiendasController {
 
         tienda.setLineales(lineales != null ? lineales : 0);
 
+        tienda.setCp(codigoPostal);
+
+        if (distritoId != null) {
+            DistritoEntity distrito = distritoRepository.findById(distritoId).orElse(null);
+            tienda.setDistrito(distrito);
+        } else {
+            tienda.setDistrito(null); // Si ocultaron el cajón, lo dejamos a null
+        }
+
         CadenaEntity cadena = cadenaRepository.findById(cadenaId).orElse(null);
         tienda.setCadena(cadena);
 
         LocalidadEntity localidad = localidadRepository.findById(localidadId).orElse(null);
+        tienda.setLocalidad(localidad);
 
         tienda = tiendaRepository.save(tienda);
 
