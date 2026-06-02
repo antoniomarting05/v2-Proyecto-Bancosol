@@ -32,6 +32,15 @@ public class TiendasController {
     @Autowired
     protected MunicipioRepository municipioRepository;
 
+    @Autowired
+    protected UsuarioRepository usuarioRepository;
+
+    @Autowired
+    protected TiendaCampanyaRepository tiendaCampanyaRepository;
+
+    @Autowired
+    protected CampanyaRepository campanyaRepository;
+
     @GetMapping("")
     public String doTiendas(Model model,
                             @RequestParam(value = "tiendas", required = false) List<TiendaEntity> tiendasFiltradas) {
@@ -49,7 +58,7 @@ public class TiendasController {
         List<LocalidadEntity> localidades = localidadRepository.findAll();
         model.addAttribute("localidades", localidades);
 
-        return "/tiendas/tiendas";
+        return "tiendas/tiendas";
     }
 
     @PostMapping("/filtrarTiendas")
@@ -71,7 +80,7 @@ public class TiendasController {
         model.addAttribute("zonaMarcada", zonaId);
         model.addAttribute("localidadMarcada", localidadId);
 
-        return "/tiendas/tiendas";
+        return "tiendas/tiendas";
     }
 
 
@@ -94,6 +103,8 @@ public class TiendasController {
         model.addAttribute("municipios", municipioRepository.findAll());
         model.addAttribute("localidades", localidadRepository.findAll());
 
+        model.addAttribute("coordinadores", usuarioRepository.findCoordinadores());
+
         return "tiendas/crear_tienda";
     }
 
@@ -104,7 +115,9 @@ public class TiendasController {
             @RequestParam(value = "lineales", required = false) Integer lineales,
             @RequestParam("domicilio") String domicilio,
             @RequestParam("cadenaId") Integer cadenaId,
-            @RequestParam("localidadId") Integer localidadId) {
+            @RequestParam("localidadId") Integer localidadId,
+            @RequestParam(value = "coordinadorPrimaveraId", required = false) Integer coordinadorPrimaveraId,
+            @RequestParam(value = "coordinadorGRId", required = false) Integer coordinadorGRId) { //addaadaddadaddad
 
         TiendaEntity tienda;
 
@@ -123,10 +136,52 @@ public class TiendasController {
         tienda.setCadena(cadena);
 
         LocalidadEntity localidad = localidadRepository.findById(localidadId).orElse(null);
-        tienda.setLocalidad(localidad);
 
-        tiendaRepository.save(tienda);
+        tienda = tiendaRepository.save(tienda);
+
+        gestionarCoordinador(tienda, 2, coordinadorPrimaveraId);
+        gestionarCoordinador(tienda, 1, coordinadorGRId);
 
         return "redirect:/tiendas";
+    }
+
+
+    private void gestionarCoordinador(TiendaEntity tienda, Integer tipoCampanyaId, Integer coordinadorId) {
+
+        UsuarioEntity coordinador = null;
+        if (coordinadorId != null) {
+            coordinador = usuarioRepository.findById(coordinadorId).orElse(null);
+        }
+
+        boolean relacionEncontrada = false;
+
+        // Buscamos si la tienda ya estaba asignada a este tipo de campaña
+        if (tienda.getTiendasCampanya() != null) {
+            for (TiendaCampanyaEntity tc : tienda.getTiendasCampanya()) {
+                if (tc.getCampanya().getTipoCampanya().getId().equals(tipoCampanyaId)) {
+                    // Actualizamos el coordinador (incluso a null si seleccionaron "Sin asignar")
+                    tc.setCoordinador(coordinador);
+                    tiendaCampanyaRepository.save(tc);
+                    relacionEncontrada = true;
+                    break;
+                }
+            }
+        }
+
+        // Si la relación no existía y han elegido un coordinador, la creamos
+        if (!relacionEncontrada && coordinador != null) {
+
+            // Busca la última campaña activa de este tipo
+            CampanyaEntity campanyaActiva = campanyaRepository.buscarUltimaCampanyaPorTipo(tipoCampanyaId);
+
+            if (campanyaActiva != null) {
+                TiendaCampanyaEntity nuevaRelacion = new TiendaCampanyaEntity();
+                nuevaRelacion.setTienda(tienda);
+                nuevaRelacion.setCampanya(campanyaActiva);
+                nuevaRelacion.setCoordinador(coordinador);
+
+                tiendaCampanyaRepository.save(nuevaRelacion);
+            }
+        }
     }
 }

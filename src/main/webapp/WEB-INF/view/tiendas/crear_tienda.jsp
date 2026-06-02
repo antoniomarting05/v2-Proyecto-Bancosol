@@ -6,11 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page import="java.util.List" %>
-<%@ page import="com.leftjoiners.bancosol.proyectobackend.entity.TiendaEntity" %>
-<%@ page import="com.leftjoiners.bancosol.proyectobackend.entity.CadenaEntity" %>
-<%@ page import="com.leftjoiners.bancosol.proyectobackend.entity.ZonaEntity" %>
-<%@ page import="com.leftjoiners.bancosol.proyectobackend.entity.LocalidadEntity" %>
-<%@ page import="com.leftjoiners.bancosol.proyectobackend.entity.MunicipioEntity" %>
+<%@ page import="com.leftjoiners.bancosol.proyectobackend.entity.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -18,7 +14,6 @@
     <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/campanyas.css">
 </head>
-<body>
 <%
     // Recuperamos las listas para los desplegables
     List<CadenaEntity> listaCadenas = (List<CadenaEntity>) request.getAttribute("cadenas");
@@ -26,12 +21,28 @@
     List<MunicipioEntity> listaMunicipios = (List<MunicipioEntity>) request.getAttribute("municipios");
     List<LocalidadEntity> listaLocalidades = (List<LocalidadEntity>) request.getAttribute("localidades");
 
+    List<UsuarioEntity> listaCoordinadores = (List<UsuarioEntity>) request.getAttribute("coordinadores");
+
     // Lógica de edición
     Boolean editando = (Boolean) request.getAttribute("editando");
     if (editando == null) editando = false;
 
     // Pasamos el objeto completo
     TiendaEntity tiendaActual = (TiendaEntity) request.getAttribute("tiendaActual");
+
+    // Lógica para preseleccionar coordinadores si estamos editando
+    Integer coordPrimaveraId = null;
+    Integer coordGRId = null;
+
+    if (editando && tiendaActual != null && tiendaActual.getTiendasCampanya() != null) {
+        for (TiendaCampanyaEntity tc : tiendaActual.getTiendasCampanya()) {
+            if (tc.getCampanya().getTipoCampanya().getId() == 2 && tc.getCoordinador() != null) {
+                coordPrimaveraId = tc.getCoordinador().getId(); // Primavera
+            } else if (tc.getCampanya().getTipoCampanya().getId() == 1 && tc.getCoordinador() != null) {
+                coordGRId = tc.getCoordinador().getId(); // Gran Recogida
+            }
+        }
+    }
 %>
 
 <jsp:include page="../shared/navbar.jsp"/>
@@ -143,14 +154,49 @@
                 </section>
 
 
-                    <%--  FALTAN LOS COORDINADORESSSSS SELECCIONARLOS --------------------------- --%>
+                <%--  FALTAN LOS COORDINADORESSSSS SELECCIONARLOS --------------------------- --%>
+
+                <section class="form-section">
+                    <h3 class="form-section-title">Coordinadores</h3>
+
+                    <div class="form-row">
+                        <%-- Select Coord Primavera --%>
+                        <div class="form-group">
+                            <label for="coordPrimavera">Coordinador Primavera</label>
+                            <select id="coordPrimavera" name="coordinadorPrimaveraId" class="campanya-select">
+                                <option value="">Sin asignar</option>
+                                <% for (UsuarioEntity u : listaCoordinadores) { %>
+                                <option value="<%= u.getId() %>"
+                                        <%= (coordPrimaveraId != null && coordPrimaveraId.equals(u.getId())) ? "selected" : "" %>>
+                                    <%= u.getNombre() %>
+                                </option>
+                                <% } %>
+                            </select>
+                        </div>
+
+                        <%-- Select Coord Gran Recogida --%>
+                        <div class="form-group">
+                            <label for="coordGR">Coordinador Gran Recogida</label>
+                            <select id="coordGR" name="coordinadorGRId" class="campanya-select">
+                                <option value="">Sin asignar</option>
+                                <% for (UsuarioEntity u : listaCoordinadores) { %>
+                                <option value="<%= u.getId() %>"
+                                        <%= (coordGRId != null && coordGRId.equals(u.getId())) ? "selected" : "" %>>
+                                    <%= u.getNombre() %>
+                                </option>
+                                <% } %>
+                            </select>
+                        </div>
+                    </div>
+
+                </section>
 
                 <section class="form-actions">
                     <a href="/tiendas" class="btn-outline">
                         <%= editando ? "Salir sin guardar" : "Cancelar" %>
                     </a>
 
-                    <button type="submit" class="btn-primary">Guardar Tienda</button>
+                    <button type="submit" class="btn-primary" style="font-size: 15.5px"> Guardar Tienda</button>
                 </section>
 
             </form>
@@ -161,7 +207,8 @@
 <jsp:include page="../shared/footer.jsp"/>
 
 
-</body>
+
+<body></body>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
