@@ -17,7 +17,6 @@
         <div class="logo-container">
             <img src="/images/LOGO_BANCOSOL.png" alt="Logo Bancosol" class="logo-img">
         </div>
-        <p><%=usuario.getNombre()%></p>
 
         <div class="user-section">
             <div class="user-avatar"><%=usuario.getNombre().substring(0,1)%></div>
