@@ -260,7 +260,7 @@ IA: 20%
             // Cogemos la opción que está seleccionada ahora mismo
             const opcionSeleccionada = zonaSelect.options[zonaSelect.selectedIndex];
 
-            // Comprobamos si el texto dice "Málaga" (ignorando mayúsculas)
+            // Comprobamos si el texto dice malaga capital
             if (opcionSeleccionada && opcionSeleccionada.text.trim().toLowerCase() === 'málaga capital') {
                 contenedorDistrito.style.display = 'block'; // Lo mostramos
             } else {
@@ -332,7 +332,7 @@ IA: 20%
             comprobarCapital();
         });
 
-        // --- Lógica para modo "Editar" ---
+        // --- Lógica para modo editar
         if (zonaSelect.value) {
             filtrarMunicipios();
             <% if ((editando || viendo) && tiendaActual != null) { %>

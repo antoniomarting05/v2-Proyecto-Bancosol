@@ -25,7 +25,7 @@ import java.util.List;
 @AllArgsConstructor
 public class TiendasController {
 
-    private final TiendaService tiendasService;
+    private final TiendaService tiendaService;
     private final CadenaService cadenaService;
     private final ZonaService zonaService;
     private final LocalidadService localidadService;
@@ -35,7 +35,7 @@ public class TiendasController {
 
     @GetMapping("")
     public String doTiendas(Model model) {
-        model.addAttribute("tiendas", this.tiendasService.listarTiendas());
+        model.addAttribute("tiendas", this.tiendaService.listarTiendas());
         model.addAttribute("currentSection", "tiendas");
 
         // Listas para los filtros
@@ -52,7 +52,7 @@ public class TiendasController {
                                    @RequestParam(value = "localidad-tienda", required = false) Integer localidadId,
                                    @RequestParam(value = "zona-tienda", required = false) Integer zonaId) {
 
-        List<Tienda> tiendasFiltradas = this.tiendasService.filtrarTiendas(cadenaId, localidadId, zonaId);
+        List<Tienda> tiendasFiltradas = this.tiendaService.filtrarTiendas(cadenaId, localidadId, zonaId);
         model.addAttribute("tiendas", tiendasFiltradas);
         model.addAttribute("currentSection", "tiendas");
 
@@ -77,7 +77,7 @@ public class TiendasController {
         model.addAttribute("currentSection", "tiendas");
 
         if (isEditando) {
-            Tienda tienda = this.tiendasService.buscarTienda(idTienda);
+            Tienda tienda = this.tiendaService.buscarTienda(idTienda);
             model.addAttribute("tiendaActual", tienda);
         }
 
@@ -100,7 +100,7 @@ public class TiendasController {
             @RequestParam(value = "coordinadorPrimaveraId", required = false) Integer coordinadorPrimaveraId,
             @RequestParam(value = "coordinadorGRId", required = false) Integer coordinadorGRId) {
 
-        this.tiendasService.guardarTienda(id, nombre, lineales, domicilio, codigoPostal, distritoId,
+        this.tiendaService.guardarTienda(id, nombre, lineales, domicilio, codigoPostal, distritoId,
                 cadenaId, localidadId, coordinadorPrimaveraId, coordinadorGRId);
 
         return "redirect:/tiendas";
@@ -109,7 +109,7 @@ public class TiendasController {
 
     @GetMapping("/verTienda")
     public String doVerTienda(Model model, @RequestParam("id") Integer idTienda) {
-        Tienda tienda = this.tiendasService.buscarTienda(idTienda);
+        Tienda tienda = this.tiendaService.buscarTienda(idTienda);
 
         model.addAttribute("tiendaActual", tienda);
         model.addAttribute("editando", false);
@@ -123,7 +123,7 @@ public class TiendasController {
 
     @GetMapping("/eliminarTienda")
     public String doEliminarTienda(@RequestParam("id") Integer idTienda) {
-        this.tiendasService.eliminarTienda(idTienda);
+        this.tiendaService.eliminarTienda(idTienda);
         return "redirect:/tiendas";
     }
 
