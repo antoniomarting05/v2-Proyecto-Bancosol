@@ -29,6 +29,15 @@ public class TiendaRestController {
         return this.tiendaService.buscarTienda(id);
     }
 
+    @GetMapping("/filtrar")
+    public List<Tienda> filtrarTiendas(
+            @RequestParam(required = false) Integer cadenaId,
+            @RequestParam(required = false) Integer localidadId,
+            @RequestParam(required = false) Integer zonaId) {
+
+        return this.tiendaService.filtrarTiendas(cadenaId, localidadId, zonaId);
+    }
+
     public record TiendaRequest(
             Integer id,
             String nombre,
