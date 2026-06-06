@@ -40,7 +40,8 @@ public class TiendaService {
 
     public void guardarTienda(Integer id, String nombre, Integer lineales, String domicilio,
                               String cp, Integer distritoId, Integer cadenaId, Integer localidadId,
-                              Integer coordPrimaveraId, Integer coordGRId) {
+                              Integer coordPrimaveraId, Integer coordGRId,
+                              Integer capitanPrimaveraId, Integer capitanGRId) {
         TiendaEntity tiendaEntity;
 
         if (id != null) {
@@ -80,8 +81,8 @@ public class TiendaService {
 
         tiendaEntity = this.tiendaRepository.save(tiendaEntity);
 
-        this.gestionarCoordinador(tiendaEntity, 2, coordPrimaveraId);
-        this.gestionarCoordinador(tiendaEntity, 1, coordGRId);
+        this.gestionarRolesCampanya(tiendaEntity, 2, coordPrimaveraId, capitanPrimaveraId);
+        this.gestionarRolesCampanya(tiendaEntity, 1, coordGRId, capitanGRId);
     }
 
     @Transactional
@@ -100,19 +101,27 @@ public class TiendaService {
         }
     }
 
-    private void gestionarCoordinador(TiendaEntity tienda, Integer tipoCampanyaId, Integer coordinadorId) {
+    private void gestionarRolesCampanya(TiendaEntity tienda, Integer tipoCampanyaId,
+                                        Integer coordinadorId, Integer capitanId) {
         UsuarioEntity coordinador = null;
+        UsuarioEntity capitan = null;
 
+        // Buscamos a los usuarios si han pasado su ID
         if (coordinadorId != null) {
             coordinador = this.usuarioRepository.findById(coordinadorId).orElse(null);
+        }
+        if (capitanId != null) {
+            capitan = this.usuarioRepository.findById(capitanId).orElse(null);
         }
 
         boolean relacionEncontrada = false;
 
+        // Si la tienda ya tiene campañas, buscamos si tiene de este tipo
         if (tienda.getTiendasCampanya() != null) {
             for (TiendaCampanyaEntity tc : tienda.getTiendasCampanya()) {
                 if (tc.getCampanya().getTipoCampanya().getId().equals(tipoCampanyaId)) {
                     tc.setCoordinador(coordinador);
+                    tc.setCapitan(capitan);
                     this.tiendaCampanyaRepository.save(tc);
                     relacionEncontrada = true;
                     break;
@@ -120,7 +129,8 @@ public class TiendaService {
             }
         }
 
-        if (!relacionEncontrada && coordinador != null) {
+        // Si no tenía campaña de este tipo Y se ha asignado a alguien, creamos la relación
+        if (!relacionEncontrada && (coordinador != null || capitan != null)) {
             CampanyaEntity campanyaActiva = this.campanyaRepository.buscarUltimaCampanyaPorTipo(tipoCampanyaId);
 
             if (campanyaActiva != null) {
@@ -128,6 +138,7 @@ public class TiendaService {
                 nuevaRelacion.setTienda(tienda);
                 nuevaRelacion.setCampanya(campanyaActiva);
                 nuevaRelacion.setCoordinador(coordinador);
+                nuevaRelacion.setCapitan(capitan);
                 this.tiendaCampanyaRepository.save(nuevaRelacion);
             }
         }

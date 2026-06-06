@@ -98,10 +98,12 @@ public class TiendasController {
             @RequestParam("cadenaId") Integer cadenaId,
             @RequestParam("localidadId") Integer localidadId,
             @RequestParam(value = "coordinadorPrimaveraId", required = false) Integer coordinadorPrimaveraId,
-            @RequestParam(value = "coordinadorGRId", required = false) Integer coordinadorGRId) {
+            @RequestParam(value = "coordinadorGRId", required = false) Integer coordinadorGRId,
+            @RequestParam(value = "capitanPrimaveraId", required = false) Integer capitanPrimaveraId,
+            @RequestParam(value = "capitanGRId", required = false) Integer capitanGRId) {
 
         this.tiendaService.guardarTienda(id, nombre, lineales, domicilio, codigoPostal, distritoId,
-                cadenaId, localidadId, coordinadorPrimaveraId, coordinadorGRId);
+                cadenaId, localidadId, coordinadorPrimaveraId, coordinadorGRId, capitanPrimaveraId, capitanGRId);
 
         return "redirect:/tiendas";
     }
@@ -134,5 +136,6 @@ public class TiendasController {
         model.addAttribute("localidades", this.localidadService.listarLocalidades());
         model.addAttribute("distritos", this.distritoService.listarDistritos());
         model.addAttribute("coordinadores", this.usuarioService.listarCoordinadores());
+        model.addAttribute("capitanes", this.usuarioService.listarCapitanes());
     }
 }

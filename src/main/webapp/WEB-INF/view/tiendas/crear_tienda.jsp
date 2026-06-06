@@ -19,6 +19,7 @@ IA: 20%
     List<Distrito> listaDistritos = (List<Distrito>) request.getAttribute("distritos");
 
     List<Usuario> listaCoordinadores = (List<Usuario>) request.getAttribute("coordinadores");
+    List<Usuario> listaCapitanes = (List<Usuario>) request.getAttribute("capitanes");
 
     // Lógica de edición y ver
     Boolean editando = (Boolean) request.getAttribute("editando");
@@ -33,13 +34,20 @@ IA: 20%
     //  coordinadores si estamos editando
     Integer coordPrimaveraId = null;
     Integer coordGRId = null;
+    Integer capitanPrimaveraId = null;
+    Integer capitanGRId = null;
 
     if ((editando || viendo) && tiendaActual != null && tiendaActual.getTiendasCampanya() != null) {
         for (TiendaCampanya tc : tiendaActual.getTiendasCampanya()) {
-            if (tc.getCampanya().getTipoCampanya().getId() == 2 && tc.getCoordinador() != null) {
-                coordPrimaveraId = tc.getCoordinador().getId(); // Primavera
-            } else if (tc.getCampanya().getTipoCampanya().getId() == 1 && tc.getCoordinador() != null) {
-                coordGRId = tc.getCoordinador().getId(); // Gran Recogida
+            // Primavera (Tipo 2)
+            if (tc.getCampanya().getTipoCampanya().getId() == 2) {
+                if (tc.getCoordinador() != null) coordPrimaveraId = tc.getCoordinador().getId();
+                if (tc.getCapitan() != null) capitanPrimaveraId = tc.getCapitan().getId();
+            }
+            // Gran Recogida (Tipo 1)
+            else if (tc.getCampanya().getTipoCampanya().getId() == 1) {
+                if (tc.getCoordinador() != null) coordGRId = tc.getCoordinador().getId();
+                if (tc.getCapitan() != null) capitanGRId = tc.getCapitan().getId();
             }
         }
     }
@@ -183,10 +191,10 @@ IA: 20%
                 </section>
 
 
-                <%--  FALTAN LOS COORDINADORESSSSS SELECCIONARLOS --------------------------- --%>
+                <%--  Coordinadores y Capitanes para seleccionarr --%>
 
                 <section class="form-section">
-                    <h3 class="form-section-title">Coordinadores</h3>
+                    <h3 class="form-section-title">Coordinadores y Capitanes</h3>
 
                     <div class="form-row">
                         <%-- Select Coord Primavera --%>
@@ -214,6 +222,36 @@ IA: 20%
                                     <%= u.getNombre() %>
                                 </option>
                                 <% } %>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <%-- Select Capitan Primavera --%>
+                        <div class="form-group">
+                            <label for="capitanPrimavera">Capitán Primavera</label>
+                            <select id="capitanPrimavera" name="capitanPrimaveraId" class="campanya-select" <%= viendo ? "disabled" : "" %>>
+                                <option value="">Sin asignar</option>
+                                <% if(listaCapitanes != null) { for (Usuario u : listaCapitanes) { %>
+                                <option value="<%= u.getId() %>"
+                                        <%= (capitanPrimaveraId != null && capitanPrimaveraId.equals(u.getId())) ? "selected" : "" %>>
+                                    <%= u.getNombre() %>
+                                </option>
+                                <% } } %>
+                            </select>
+                        </div>
+
+                        <%-- Select Capitan Gran Recogida --%>
+                        <div class="form-group">
+                            <label for="capitanGR">Capitán Gran Recogida</label>
+                            <select id="capitanGR" name="capitanGRId" class="campanya-select" <%= viendo ? "disabled" : "" %>>
+                                <option value="">Sin asignar</option>
+                                <% if(listaCapitanes != null) { for (Usuario u : listaCapitanes) { %>
+                                <option value="<%= u.getId() %>"
+                                        <%= (capitanGRId != null && capitanGRId.equals(u.getId())) ? "selected" : "" %>>
+                                    <%= u.getNombre() %>
+                                </option>
+                                <% } } %>
                             </select>
                         </div>
                     </div>

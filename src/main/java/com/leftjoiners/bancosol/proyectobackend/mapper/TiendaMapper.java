@@ -84,6 +84,13 @@ public class TiendaMapper extends MapperDTO<Tienda, TiendaEntity> {
                     tcDTO.setCoordinador(uDTO);
                 }
 
+                if (tc.getCapitan() != null) {
+                    Usuario uDTO = new Usuario();
+                    uDTO.setId(tc.getCapitan().getId());
+                    uDTO.setNombre(tc.getCapitan().getNombre());
+                    tcDTO.setCapitan(uDTO);
+                }
+
                 return tcDTO;
             }).collect(Collectors.toList()));
         }

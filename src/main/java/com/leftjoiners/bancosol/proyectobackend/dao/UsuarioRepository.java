@@ -14,4 +14,7 @@ public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Integer>
 
     @Query("SELECT u FROM UsuarioEntity u WHERE u.rol.id = 2")
     List<UsuarioEntity> findCoordinadores();
+
+    @Query("SELECT u FROM UsuarioEntity u WHERE u.rol.id = 3")
+    List<UsuarioEntity> findCapitanes();
 }

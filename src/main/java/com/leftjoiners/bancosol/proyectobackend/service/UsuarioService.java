@@ -31,4 +31,9 @@ public class UsuarioService {
         return this.usuarioMapper.toDTOList(coordinadores);
     }
 
+    public List<Usuario> listarCapitanes(){
+        List<UsuarioEntity> capitanes = this.usuarioRepository.findCapitanes();
+        return this.usuarioMapper.toDTOList(capitanes);
+    }
+
 }
