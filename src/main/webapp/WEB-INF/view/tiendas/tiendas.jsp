@@ -177,11 +177,6 @@ IA: 20%
                 </div>
             </section>
         </div>
-
-        <div class="right-column">
-            <div class="card side-panel" id="info-container-tienda">
-            </div>
-        </div>
     </div>
 </main>
 
