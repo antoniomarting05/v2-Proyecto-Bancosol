@@ -13,7 +13,6 @@ public class TiendaCampanya {
     private Tienda tienda;
     private Campanya campanya;
     private Usuario coordinador;
-    private Usuario capitan;
 
     private List<Integer> turnos;
 }

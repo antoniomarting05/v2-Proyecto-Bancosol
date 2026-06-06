@@ -99,11 +99,10 @@ public class TiendasController {
             @RequestParam("localidadId") Integer localidadId,
             @RequestParam(value = "coordinadorPrimaveraId", required = false) Integer coordinadorPrimaveraId,
             @RequestParam(value = "coordinadorGRId", required = false) Integer coordinadorGRId,
-            @RequestParam(value = "capitanPrimaveraId", required = false) Integer capitanPrimaveraId,
-            @RequestParam(value = "capitanGRId", required = false) Integer capitanGRId) {
+            @RequestParam(value = "capitanId", required = false) Integer capitanId) {
 
         this.tiendaService.guardarTienda(id, nombre, lineales, domicilio, codigoPostal, distritoId,
-                cadenaId, localidadId, coordinadorPrimaveraId, coordinadorGRId, capitanPrimaveraId, capitanGRId);
+                cadenaId, localidadId, coordinadorPrimaveraId, coordinadorGRId, capitanId);
 
         return "redirect:/tiendas";
     }

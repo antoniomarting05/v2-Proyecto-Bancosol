@@ -52,5 +52,5 @@ public class UsuarioEntity {
     private List<TiendaCampanyaEntity> tiendasCoordinadas = new ArrayList<>();
 
     @OneToMany(mappedBy = "capitan")
-    private List<TiendaCampanyaEntity> tiendasCapitaneadas = new ArrayList<>();
+    private List<TiendaEntity> tiendasCapitaneadas = new ArrayList<>();
 }

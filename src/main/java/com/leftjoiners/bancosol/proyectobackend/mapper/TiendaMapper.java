@@ -32,6 +32,13 @@ public class TiendaMapper extends MapperDTO<Tienda, TiendaEntity> {
             dto.setCadena(c);
         }
 
+        if (entity.getCapitan() != null) {
+            Usuario uDTO = new Usuario();
+            uDTO.setId(entity.getCapitan().getId());
+            uDTO.setNombre(entity.getCapitan().getNombre());
+            dto.setCapitan(uDTO);
+        }
+
         if (entity.getLocalidad() != null) {
             Localidad l = new Localidad();
             l.setId(entity.getLocalidad().getId());
@@ -82,13 +89,6 @@ public class TiendaMapper extends MapperDTO<Tienda, TiendaEntity> {
                     uDTO.setId(tc.getCoordinador().getId());
                     uDTO.setNombre(tc.getCoordinador().getNombre());
                     tcDTO.setCoordinador(uDTO);
-                }
-
-                if (tc.getCapitan() != null) {
-                    Usuario uDTO = new Usuario();
-                    uDTO.setId(tc.getCapitan().getId());
-                    uDTO.setNombre(tc.getCapitan().getNombre());
-                    tcDTO.setCapitan(uDTO);
                 }
 
                 return tcDTO;

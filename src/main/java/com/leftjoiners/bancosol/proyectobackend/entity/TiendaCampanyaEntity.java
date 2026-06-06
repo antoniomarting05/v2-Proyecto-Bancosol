@@ -28,10 +28,6 @@ public class TiendaCampanyaEntity {
     @JoinColumn(name = "id_coordinador")
     private UsuarioEntity coordinador;
 
-    @ManyToOne
-    @JoinColumn(name = "id_capitan")
-    private UsuarioEntity capitan;
-
     @OneToMany(mappedBy = "tiendaCampanya")
     private List<TurnoEntity> turnos = new ArrayList<>();
 }

@@ -47,13 +47,6 @@ public class TiendaCampanyaMapper extends MapperDTO<TiendaCampanya, TiendaCampan
             dto.setCoordinador(u);
         }
 
-        if (entity.getCapitan() != null) {
-            Usuario u = new Usuario();
-            u.setId(entity.getCapitan().getId());
-            u.setNombre(entity.getCapitan().getNombre());
-            dto.setCapitan(u);
-        }
-
         if (entity.getTurnos() != null) {
             dto.setTurnos(entity.getTurnos().stream().map(t -> t.getId()).collect(Collectors.toList()));
         }

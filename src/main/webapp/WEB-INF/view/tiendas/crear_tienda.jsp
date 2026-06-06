@@ -34,20 +34,22 @@ IA: 20%
     //  coordinadores si estamos editando
     Integer coordPrimaveraId = null;
     Integer coordGRId = null;
-    Integer capitanPrimaveraId = null;
-    Integer capitanGRId = null;
+    Integer capitanId = null;
 
-    if ((editando || viendo) && tiendaActual != null && tiendaActual.getTiendasCampanya() != null) {
-        for (TiendaCampanya tc : tiendaActual.getTiendasCampanya()) {
-            // Primavera (Tipo 2)
-            if (tc.getCampanya().getTipoCampanya().getId() == 2) {
-                if (tc.getCoordinador() != null) coordPrimaveraId = tc.getCoordinador().getId();
-                if (tc.getCapitan() != null) capitanPrimaveraId = tc.getCapitan().getId();
-            }
-            // Gran Recogida (Tipo 1)
-            else if (tc.getCampanya().getTipoCampanya().getId() == 1) {
-                if (tc.getCoordinador() != null) coordGRId = tc.getCoordinador().getId();
-                if (tc.getCapitan() != null) capitanGRId = tc.getCapitan().getId();
+    if ((editando || viendo) && tiendaActual != null) {
+        // Obtenemos el capitán directamente de la tienda
+        if (tiendaActual.getCapitan() != null) {
+            capitanId = tiendaActual.getCapitan().getId();
+        }
+
+        // Obtenemos los coordinadores de las campañas
+        if (tiendaActual.getTiendasCampanya() != null) {
+            for (TiendaCampanya tc : tiendaActual.getTiendasCampanya()) {
+                if (tc.getCampanya().getTipoCampanya().getId() == 2 && tc.getCoordinador() != null) {
+                    coordPrimaveraId = tc.getCoordinador().getId();
+                } else if (tc.getCampanya().getTipoCampanya().getId() == 1 && tc.getCoordinador() != null) {
+                    coordGRId = tc.getCoordinador().getId();
+                }
             }
         }
     }
@@ -227,28 +229,14 @@ IA: 20%
                     </div>
 
                     <div class="form-row">
-                        <%-- Select Capitan Primavera --%>
-                        <div class="form-group">
-                            <label for="capitanPrimavera">Capitán Primavera</label>
-                            <select id="capitanPrimavera" name="capitanPrimaveraId" class="campanya-select" <%= viendo ? "disabled" : "" %>>
+                        <%-- Select Capitan Único --%>
+                        <div class="form-group" style="flex: 1;">
+                            <label for="capitanId">Capitán de Tienda</label>
+                            <select id="capitanId" name="capitanId" class="campanya-select" <%= viendo ? "disabled" : "" %>>
                                 <option value="">Sin asignar</option>
                                 <% if(listaCapitanes != null) { for (Usuario u : listaCapitanes) { %>
                                 <option value="<%= u.getId() %>"
-                                        <%= (capitanPrimaveraId != null && capitanPrimaveraId.equals(u.getId())) ? "selected" : "" %>>
-                                    <%= u.getNombre() %>
-                                </option>
-                                <% } } %>
-                            </select>
-                        </div>
-
-                        <%-- Select Capitan Gran Recogida --%>
-                        <div class="form-group">
-                            <label for="capitanGR">Capitán Gran Recogida</label>
-                            <select id="capitanGR" name="capitanGRId" class="campanya-select" <%= viendo ? "disabled" : "" %>>
-                                <option value="">Sin asignar</option>
-                                <% if(listaCapitanes != null) { for (Usuario u : listaCapitanes) { %>
-                                <option value="<%= u.getId() %>"
-                                        <%= (capitanGRId != null && capitanGRId.equals(u.getId())) ? "selected" : "" %>>
+                                        <%= (capitanId != null && capitanId.equals(u.getId())) ? "selected" : "" %>>
                                     <%= u.getNombre() %>
                                 </option>
                                 <% } } %>

@@ -18,6 +18,8 @@ public class Tienda {
     private String cp;
     private Distrito distrito;
     private String domicilio;
+    private Usuario capitan;
+
 
     private List<TiendaCampanya> tiendasCampanya;
 }

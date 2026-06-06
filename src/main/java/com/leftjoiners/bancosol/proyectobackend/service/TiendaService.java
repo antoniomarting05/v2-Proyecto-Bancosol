@@ -41,7 +41,7 @@ public class TiendaService {
     public void guardarTienda(Integer id, String nombre, Integer lineales, String domicilio,
                               String cp, Integer distritoId, Integer cadenaId, Integer localidadId,
                               Integer coordPrimaveraId, Integer coordGRId,
-                              Integer capitanPrimaveraId, Integer capitanGRId) {
+                              Integer capitanId) {
         TiendaEntity tiendaEntity;
 
         if (id != null) {
@@ -79,10 +79,16 @@ public class TiendaService {
             tiendaEntity.setLocalidad(null);
         }
 
+        if (capitanId != null) {
+            tiendaEntity.setCapitan(this.usuarioRepository.findById(capitanId).orElse(null));
+        } else {
+            tiendaEntity.setCapitan(null);
+        }
+
         tiendaEntity = this.tiendaRepository.save(tiendaEntity);
 
-        this.gestionarRolesCampanya(tiendaEntity, 2, coordPrimaveraId, capitanPrimaveraId);
-        this.gestionarRolesCampanya(tiendaEntity, 1, coordGRId, capitanGRId);
+        this.gestionarRolesCampanya(tiendaEntity, 2, coordPrimaveraId);
+        this.gestionarRolesCampanya(tiendaEntity, 1, coordGRId);
     }
 
     @Transactional
@@ -102,16 +108,13 @@ public class TiendaService {
     }
 
     private void gestionarRolesCampanya(TiendaEntity tienda, Integer tipoCampanyaId,
-                                        Integer coordinadorId, Integer capitanId) {
+                                        Integer coordinadorId) {
         UsuarioEntity coordinador = null;
         UsuarioEntity capitan = null;
 
         // Buscamos a los usuarios si han pasado su ID
         if (coordinadorId != null) {
             coordinador = this.usuarioRepository.findById(coordinadorId).orElse(null);
-        }
-        if (capitanId != null) {
-            capitan = this.usuarioRepository.findById(capitanId).orElse(null);
         }
 
         boolean relacionEncontrada = false;
@@ -121,7 +124,6 @@ public class TiendaService {
             for (TiendaCampanyaEntity tc : tienda.getTiendasCampanya()) {
                 if (tc.getCampanya().getTipoCampanya().getId().equals(tipoCampanyaId)) {
                     tc.setCoordinador(coordinador);
-                    tc.setCapitan(capitan);
                     this.tiendaCampanyaRepository.save(tc);
                     relacionEncontrada = true;
                     break;
@@ -138,7 +140,6 @@ public class TiendaService {
                 nuevaRelacion.setTienda(tienda);
                 nuevaRelacion.setCampanya(campanyaActiva);
                 nuevaRelacion.setCoordinador(coordinador);
-                nuevaRelacion.setCapitan(capitan);
                 this.tiendaCampanyaRepository.save(nuevaRelacion);
             }
         }

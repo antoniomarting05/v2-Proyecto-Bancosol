@@ -49,8 +49,7 @@ public class TiendaRestController {
             Integer localidadId,
             Integer coordinadorPrimaveraId,
             Integer coordinadorGRId,
-            Integer capitanPrimaveraId,
-            Integer capitanGRId
+            Integer capitanId
     ) {}
 
     @PostMapping("/guardar")
@@ -66,8 +65,7 @@ public class TiendaRestController {
                 request.localidadId(),
                 request.coordinadorPrimaveraId(),
                 request.coordinadorGRId(),
-                request.capitanPrimaveraId(),
-                request.capitanGRId()
+                request.capitanId()
         );
     }
 

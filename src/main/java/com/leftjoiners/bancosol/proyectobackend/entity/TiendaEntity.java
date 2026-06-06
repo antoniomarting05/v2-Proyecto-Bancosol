@@ -35,6 +35,10 @@ public class TiendaEntity {
 
     private String domicilio;
 
+    @ManyToOne
+    @JoinColumn(name = "id_capitan")
+    private UsuarioEntity capitan;
+
     @OneToMany(mappedBy = "tienda")
     private List<TiendaCampanyaEntity> tiendasCampanya = new ArrayList<>();
 }
