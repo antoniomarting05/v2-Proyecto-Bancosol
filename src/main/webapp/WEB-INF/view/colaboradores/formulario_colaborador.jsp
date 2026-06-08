@@ -1,4 +1,5 @@
-<%@ page import="com.leftjoiners.bancosol.proyectobackend.dto.Colaborador" %><%--
+<%@ page import="com.leftjoiners.bancosol.proyectobackend.dto.Colaborador" %>
+<%@ page import="com.leftjoiners.bancosol.proyectobackend.dto.ContactoColaborador" %><%--
   Created by IntelliJ IDEA.
   User: marin
   Date: 25/05/2026
@@ -45,13 +46,6 @@
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="contactoPrincipal">Contacto Principal</label>
-                                <input type="text" id="contactoPrincipal" name="contactoPrincipal" value="<%=editando ? colaborador.getContactoPrincipal() : ""%>">
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
                                 <label for="domicilio">Domicilio</label>
                                 <input type="text" id="domicilio" name="domicilio" value="<%=editando? colaborador.getDomicilio() : ""%>">
                             </div>
@@ -59,6 +53,43 @@
                                 <label for="cp">Código Postal</label>
                                 <input type="text" id="cp" name="cp" value="<%= editando ? colaborador.getCp() : ""%>">
                             </div>
+                        </div>
+
+                        <div class="form-group contact-span">
+                            <p>Contactos</p>
+                            <table class="contact-table">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th class="columna-centrada">Contacto Principal</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <%if (editando) {
+                                        for (ContactoColaborador c : colaborador.getContactos()) {%>
+                                        <tr>
+                                            <td><%=c.getNombre()%></td>
+                                            <td class="columna-centrada">
+                                                <input type="radio" name="contactoPrincipal" value="<%=c.getNombre()%>" <%=c.getNombre().equals(colaborador.getContactoPrincipal()) ? "checked" : ""%>>
+                                            </td>
+                                            <td class="columna-centrada">
+                                                <a class="btn-outline" href="/colaboradores/editarContacto?id=<%=c.getId()%>"> Editar </a>
+                                                <a class="btn-danger-outline" href="/colaboradores/eliminarContacto?id=<%=c.getId()%>"> Eliminar</a>
+                                            </td>
+                                        </tr>
+                                    <%
+                                            }
+                                        }
+                                    %>
+                                <tr>
+                                    <td class="anadir-contacto">
+                                        <a href="/colaboradores/anadirContacto?id=<%=colaborador.getId()%>"> + Añadir contacto</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
                         </div>
 
                         <div class="form-group">

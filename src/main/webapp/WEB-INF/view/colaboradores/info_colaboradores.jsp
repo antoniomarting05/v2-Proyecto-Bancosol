@@ -13,7 +13,8 @@
     <link rel="stylesheet" href="/css/colaboradores.css" />
 </head>
 <body>
-<%Colaborador colaborador = (Colaborador) request.getAttribute("colaborador");%>
+<%Colaborador colaborador = (Colaborador) request.getAttribute("colaborador");
+ContactoColaborador contactoPrincipal = (ContactoColaborador) request.getAttribute("contactoPrincipal");%>
 
 <div id="colaborador-container">
     <div id="colaborador-localization">
@@ -24,22 +25,20 @@
     </div>
     <div id="colaborador-schedule">
         <div id="contactosCard">
-            <%for (ContactoColaborador c : colaborador.getContactos()){%>
                 <div class="info-card">
                     <div class="info-header">
                         <div class="info-main">
-                            <p class="lbl-capitan"><%=c.getNombre()%></p>
+                            <p class="lbl-capitan"><%=contactoPrincipal.getNombre()%></p>
                         </div>
                         <div class="info-side">
                             <div>TELÉFONO</div>
-                            <div><%=c.getTelefono() != null ? c.getTelefono() : "--"%></div>
+                            <div><%=contactoPrincipal.getTelefono() != null ? contactoPrincipal.getTelefono() : "--"%></div>
                         </div>
                     </div>
                     <div class="info-body">
-                        <p><strong>Email: </strong><%=c.getEmail() != null ? c.getEmail() : "--"%></p>
+                        <p><strong>Email: </strong><%=contactoPrincipal.getEmail() != null ? contactoPrincipal.getEmail() : "--"%></p>
                     </div>
                 </div>
-            <%}%>
         </div>
         <div id="colaborador-observaciones">
             <p class="section-title">Observaciones</p>

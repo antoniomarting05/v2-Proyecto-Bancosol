@@ -73,6 +73,8 @@
 
 .form-group input[type="text"],
 .form-group input[type="date"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
 .form-group select {
     padding: 10px 12px;
     border: 1px solid var(--border-color);
@@ -87,6 +89,8 @@
 
 .form-group input[type="text"]:focus,
 .form-group input[type="date"]:focus,
+.form-group input[type="email"]:focus,
+.form-group input[type="tel"]:focus,
 .form-group select:focus {
     border-color: var(--accent-blue);
     box-shadow: 0 0 0 3px rgba(68, 114, 196, 0.12);
@@ -158,18 +162,13 @@ table a {
     background-color: var(--bg-main);
     border-radius: 6px;
     color: var(--text-dark);
-    padding: 5px 10px;
+    padding: 10px 20px;
     font-weight: 500;
     cursor: pointer;
 }
 
 .columna-centrada {
     text-align: center;
-    justify-content: space-between;
-}
-
-.columna-centrada a:first-child {
-    margin-right: 6px;
 }
 
 .anadir-contacto {
@@ -182,4 +181,24 @@ table a {
     border: 0;
     background-color: var(--bg-white);
     color: var(--text-muted);
+}
+
+.text-resaltado {
+    color: var(--selected-text-color);
+    font-size: large;
+}
+
+.principal-group {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.principal-group label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
 }

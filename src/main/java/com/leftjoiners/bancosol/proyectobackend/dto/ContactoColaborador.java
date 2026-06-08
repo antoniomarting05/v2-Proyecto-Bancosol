@@ -14,4 +14,5 @@ public class ContactoColaborador {
     private String email;
     private String telefono;
     private Boolean esPrincipal;
+    private Colaborador colaborador;
 }

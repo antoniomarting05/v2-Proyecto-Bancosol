@@ -5,10 +5,7 @@ Javier Urbaneja Benítez: 100%
 package com.leftjoiners.bancosol.proyectobackend.controller;
 
 import com.leftjoiners.bancosol.proyectobackend.dao.*;
-import com.leftjoiners.bancosol.proyectobackend.dto.AsignacionTurno;
-import com.leftjoiners.bancosol.proyectobackend.dto.Colaborador;
-import com.leftjoiners.bancosol.proyectobackend.dto.TiendaCampanya;
-import com.leftjoiners.bancosol.proyectobackend.dto.Turno;
+import com.leftjoiners.bancosol.proyectobackend.dto.*;
 import com.leftjoiners.bancosol.proyectobackend.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +28,7 @@ public class AsignacionTurnoController {
     private final TurnoService turnoService;
     private final ColaboradorService colaboradorService;
     private final TipoTurnoService tipoTurnoService;
+    private final ContactoColaboradorService contactoColaboradorService;
 
     @Autowired
     protected TipoTurnoRepository tipoTurnoRepository;
@@ -85,6 +83,7 @@ public class AsignacionTurnoController {
         }
 
         model.addAttribute("colaboradores", this.colaboradorService.listarColaboradores());
+        model.addAttribute("contactoPrincipal", this.contactoColaboradorService.buscarContactoPrincipalDe(colaborador.getId()));
         model.addAttribute("colaborador", colaborador);
         model.addAttribute("tienda", tienda.getTienda());
         model.addAttribute("asignacionTurno", asignacionTurno);
@@ -151,8 +150,10 @@ public class AsignacionTurnoController {
     @PostMapping("/buscarColaborador")
     public String buscarColaborador(@RequestParam("id") Integer id, Model model) {
         Colaborador colaborador = this.colaboradorService.buscarColaborador(id);
+        ContactoColaborador contactoColaborador = contactoColaboradorService.buscarContactoPrincipalDe(id);
 
         model.addAttribute("colaborador", colaborador);
+        model.addAttribute("contactoPrincipal", contactoColaborador);
 
         return "colaboradores/info_colaboradores";
     }
