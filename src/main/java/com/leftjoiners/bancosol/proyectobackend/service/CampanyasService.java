@@ -86,4 +86,16 @@ public class CampanyasService {
             this.campanyaRepository.deleteAll(campanyas);
         }
     }
+
+    public List<Campanya> filtrarCampanyasPorTipo(Integer tipoCampanyaId) {
+        List<CampanyaEntity> campanyas;
+
+        if (tipoCampanyaId == 0) {
+            campanyas = this.campanyaRepository.findAll();
+        } else {
+            campanyas = this.campanyaRepository.findByTipoCampanya(tipoCampanyaId);
+        }
+
+        return this.campanyaMapper.toDTOList(campanyas);
+    }
 }

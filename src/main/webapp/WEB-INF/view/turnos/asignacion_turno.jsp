@@ -21,27 +21,29 @@ contentType="text/html;charset=UTF-8" language="java" %>
 
   %>
 <jsp:include page="../shared/navbar.jsp"/>
-  <div>
-    <label>
-      Tipo de Campaña
+
+  <div class="filtros-container">
+    <div class="filtro-group">
+      <label for="selectTipoCampanya">Tipo de Campaña</label>
       <select name="tipoCampanya" id="selectTipoCampanya">
         <option value="0" <%=tipoCampanyaActual == 0 ? "selected" : ""%>>Sin Filtro</option>
         <%for (TipoCampanya tipo: tipoCampanyas){%>
         <option value="<%=tipo.getId()%>" <%=tipoCampanyaActual == tipo.getId() ? "selected" : ""%>><%=tipo.getNombre()%></option>
         <%}%>
       </select>
-    </label>
+    </div>
 
-    <label>
-      Campaña
+    <div class="filtro-group">
+      <label for="selectCampanya">Campaña</label>
       <select name="campaña" id="selectCampanya">
         <option value="0" <%=campanyaActual == 0 ? "selected" : ""%>>Sin Filtro</option>
         <%for (Campanya campanya: campanyas){%>
         <option value="<%=campanya.getId()%>" <%=campanyaActual == campanya.getId() ? "selected" : ""%>><%=campanya.getNombre()%></option>
         <%}%>
       </select>
-    </label>
+    </div>
   </div>
+
 <main class="page-wrapper">
 
   <div class="left-column">

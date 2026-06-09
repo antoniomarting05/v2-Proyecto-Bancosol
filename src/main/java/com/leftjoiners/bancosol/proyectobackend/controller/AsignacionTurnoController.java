@@ -35,10 +35,8 @@ public class AsignacionTurnoController {
 
     private void cargarInicio(Model model) {
         List<TipoCampanya> tipoCampanyas = this.tipoCampanyaService.listarTipoCampanyas();
-        List<Campanya> campanyas = this.campanyasService.listarCampanyas();
 
         model.addAttribute("tipoCampanyas", tipoCampanyas);
-        model.addAttribute("campanyas", campanyas);
         model.addAttribute("currentSection", "turnos");
     }
 
@@ -47,8 +45,10 @@ public class AsignacionTurnoController {
         this.cargarInicio(model);
 
         List<AsignacionTurno> asignacionesTurno = asignacionTurnoService.listarAsignacionColaboradores();
+        List<Campanya> campanyas = this.campanyasService.listarCampanyas();
 
         model.addAttribute("asignacionesTurno", asignacionesTurno);
+        model.addAttribute("campanyas", campanyas);
         model.addAttribute("tipoCampanyaActual", 0);
         model.addAttribute("campanyaActual", 0);
 
@@ -62,12 +62,16 @@ public class AsignacionTurnoController {
         this.cargarInicio(model);
 
         List<AsignacionTurno> asignacionesTurno = new ArrayList<>();
+        List<Campanya> campanyas = new ArrayList<>();
+
 
         if (tipoCampanyaId != null && campanyaId != null) {
             asignacionesTurno = this.asignacionTurnoService.filtrarPorTipoyCampanya(tipoCampanyaId, campanyaId);
+            campanyas = this.campanyasService.filtrarCampanyasPorTipo(tipoCampanyaId);
         }
 
         model.addAttribute("asignacionesTurno", asignacionesTurno);
+        model.addAttribute("campanyas", campanyas);
         model.addAttribute("tipoCampanyaActual", tipoCampanyaId);
         model.addAttribute("campanyaActual", campanyaId);
 

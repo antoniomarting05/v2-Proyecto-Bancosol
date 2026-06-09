@@ -26,7 +26,8 @@ public class AsignacionTurnoService {
     }
 
     public List<AsignacionTurno> filtrarPorTipoyCampanya(Integer tipoCampanyaId, Integer campanyaId) {
-        List<AsignacionTurnoEntity> asignacionTurnos = new ArrayList<>();
+        List<AsignacionTurnoEntity> asignacionTurnos;
+
         if (tipoCampanyaId == 0 && campanyaId == 0) {
             asignacionTurnos = asignacionTurnoRepository.findAll();
         } else if (tipoCampanyaId != 0 && campanyaId == 0) {
