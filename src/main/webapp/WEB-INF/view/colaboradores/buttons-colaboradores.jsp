@@ -15,7 +15,7 @@
     <div class="buttons-section">
         <div class="flex-buttons">
             <button class="btn-primary" id="modificar-b">Modificar</button>
-            <button class="btn-outline eliminar-b">Eliminar</button>
+            <button class="btn-outline eliminar-b" id="eliminar-b">Eliminar</button>
         </div>
     </div>
 </body>

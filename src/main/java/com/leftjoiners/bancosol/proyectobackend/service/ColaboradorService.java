@@ -5,11 +5,13 @@ Javier Urbaneja Benítez: 100%
 package com.leftjoiners.bancosol.proyectobackend.service;
 
 import com.leftjoiners.bancosol.proyectobackend.dao.ColaboradoresRespository;
+import com.leftjoiners.bancosol.proyectobackend.dao.ContactoColaboradorRepository;
 import com.leftjoiners.bancosol.proyectobackend.dao.LocalidadRepository;
 import com.leftjoiners.bancosol.proyectobackend.dao.UsuarioRepository;
 import com.leftjoiners.bancosol.proyectobackend.dto.Colaborador;
 import com.leftjoiners.bancosol.proyectobackend.dto.Localidad;
 import com.leftjoiners.bancosol.proyectobackend.entity.ColaboradorEntity;
+import com.leftjoiners.bancosol.proyectobackend.entity.ContactoColaboradorEntity;
 import com.leftjoiners.bancosol.proyectobackend.entity.LocalidadEntity;
 import com.leftjoiners.bancosol.proyectobackend.entity.UsuarioEntity;
 import com.leftjoiners.bancosol.proyectobackend.mapper.ColaboradorMapper;
@@ -25,6 +27,7 @@ public class ColaboradorService {
     private final ColaboradorMapper colaboradorMapper;
     private final LocalidadRepository localidadRepository;
     private final UsuarioRepository usuarioRepository;
+    private final ContactoColaboradorRepository contactoColaboradorRepository;
 
     public List<Colaborador> listarColaboradores () {
         List<ColaboradorEntity> colaboradores = this.colaboradoresRespository.findAll();
@@ -66,6 +69,11 @@ public class ColaboradorService {
 
     public void eliminarColaborador(Integer id) {
         if (id != null){
+            ColaboradorEntity colaborador =  this.colaboradoresRespository.findById(id).orElse(null);
+            for (ContactoColaboradorEntity contacto : colaborador.getContactos()) {
+                this.contactoColaboradorRepository.deleteById(contacto.getId());
+            }
+
             this.colaboradoresRespository.deleteById(id);
         }
     }

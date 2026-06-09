@@ -207,6 +207,16 @@
             }
         }
 
+        const temporal = document.querySelectorAll('input[name="temporal"]');
+        if (temporal.length == 0) {
+            event.preventDefault();
+            alert("Error: Debe seleccionar si el colaborador es temporal.")
+            window.scrollTo(0,0);
+            return;
+        }
+
+
+
 
     })
 </script>
