@@ -1,5 +1,7 @@
 <%@ page import="java.util.List" %>
-<%@ page import="com.leftjoiners.bancosol.proyectobackend.dto.AsignacionTurno" %><%-- Created by IntelliJ IDEA. User: javie Date: 18/04/2026 Time: 23:35 To
+<%@ page import="com.leftjoiners.bancosol.proyectobackend.dto.AsignacionTurno" %>
+<%@ page import="com.leftjoiners.bancosol.proyectobackend.dto.TipoCampanya" %>
+<%@ page import="com.leftjoiners.bancosol.proyectobackend.dto.Campanya" %><%-- Created by IntelliJ IDEA. User: javie Date: 18/04/2026 Time: 23:35 To
 change this template use File | Settings | File Templates. --%> <%@ page
 contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -10,14 +12,42 @@ contentType="text/html;charset=UTF-8" language="java" %>
 </head>
 <body>
   <%
-    List<AsignacionTurno> tiendas = (List<AsignacionTurno>) request.getAttribute("asignacionColaboradores");
+    List<AsignacionTurno> tiendas = (List<AsignacionTurno>) request.getAttribute("asignacionesTurno");
+    List<TipoCampanya> tipoCampanyas = (List<TipoCampanya>) request.getAttribute("tipoCampanyas");
+    List<Campanya> campanyas = (List<Campanya>) request.getAttribute("campanyas");
+
+    Integer tipoCampanyaActual = (Integer) request.getAttribute("tipoCampanyaActual");
+    Integer campanyaActual = (Integer) request.getAttribute("campanyaActual");
+
   %>
 <jsp:include page="../shared/navbar.jsp"/>
+  <div>
+    <label>
+      Tipo de Campaña
+      <select name="tipoCampanya" id="selectTipoCampanya">
+        <option value="0" <%=tipoCampanyaActual == 0 ? "selected" : ""%>>Sin Filtro</option>
+        <%for (TipoCampanya tipo: tipoCampanyas){%>
+        <option value="<%=tipo.getId()%>" <%=tipoCampanyaActual == tipo.getId() ? "selected" : ""%>><%=tipo.getNombre()%></option>
+        <%}%>
+      </select>
+    </label>
 
+    <label>
+      Campaña
+      <select name="campaña" id="selectCampanya">
+        <option value="0" <%=campanyaActual == 0 ? "selected" : ""%>>Sin Filtro</option>
+        <%for (Campanya campanya: campanyas){%>
+        <option value="<%=campanya.getId()%>" <%=campanyaActual == campanya.getId() ? "selected" : ""%>><%=campanya.getNombre()%></option>
+        <%}%>
+      </select>
+    </label>
+  </div>
 <main class="page-wrapper">
 
   <div class="left-column">
+
     <div class="table-container card">
+
       <table class="modernTable">
         <thead>
         <tr>
@@ -58,6 +88,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
   <jsp:include page="../shared/footer.jsp"/>
 
   <script>
+    // Lógica del desplegable de la derecha:
 	const table = document.querySelector("#table-body");
 	const form = document.querySelector("#volunteer-container");
     const infoContainer = document.querySelector("#info-container");
@@ -180,6 +211,24 @@ contentType="text/html;charset=UTF-8" language="java" %>
         table.querySelectorAll("tr").forEach(row => row.classList.remove("selected"));
       }
     });
+
+
+
+
+    // Lógica del filtrado de arriba
+    const tipoCampanyaSelect = document.querySelector("#selectTipoCampanya");
+    const campanyaSelect = document.querySelector("#selectCampanya");
+
+    function fetchFiltros() {
+      const tipoCampanyaId = tipoCampanyaSelect.value;
+      const campanyaId = campanyaSelect.value;
+
+      window.location.href = "/turnos/filtrar?tipoCampanyaId="+tipoCampanyaId + "&campanyaId=" + campanyaId;
+    }
+
+    tipoCampanyaSelect.addEventListener("change", fetchFiltros);
+
+    campanyaSelect.addEventListener("change", fetchFiltros);
   </script>
 </body>
 </html>

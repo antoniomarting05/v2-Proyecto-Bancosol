@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -29,18 +30,50 @@ public class AsignacionTurnoController {
     private final ColaboradorService colaboradorService;
     private final TipoTurnoService tipoTurnoService;
     private final ContactoColaboradorService contactoColaboradorService;
+    private final TipoCampanyaService tipoCampanyaService;
+    private final CampanyasService campanyasService;
 
-    @Autowired
-    protected TipoTurnoRepository tipoTurnoRepository;
+    private void cargarInicio(Model model) {
+        List<TipoCampanya> tipoCampanyas = this.tipoCampanyaService.listarTipoCampanyas();
+        List<Campanya> campanyas = this.campanyasService.listarCampanyas();
+
+        model.addAttribute("tipoCampanyas", tipoCampanyas);
+        model.addAttribute("campanyas", campanyas);
+        model.addAttribute("currentSection", "turnos");
+    }
 
     @GetMapping("")
     public String doInit(Model model) {
-        List<AsignacionTurno> asignacionColaboradores = asignacionTurnoService.listarAsignacionColaboradores();
+        this.cargarInicio(model);
 
-        model.addAttribute("asignacionColaboradores", asignacionColaboradores);
-        model.addAttribute("currentSection", "turnos");
+        List<AsignacionTurno> asignacionesTurno = asignacionTurnoService.listarAsignacionColaboradores();
+
+        model.addAttribute("asignacionesTurno", asignacionesTurno);
+        model.addAttribute("tipoCampanyaActual", 0);
+        model.addAttribute("campanyaActual", 0);
+
         return "turnos/asignacion_turno";
     }
+
+    @GetMapping("/filtrar")
+    public String filtrarAsignaciones(@RequestParam("tipoCampanyaId") Integer tipoCampanyaId,
+                                      @RequestParam("campanyaId") Integer campanyaId,
+                                      Model model) {
+        this.cargarInicio(model);
+
+        List<AsignacionTurno> asignacionesTurno = new ArrayList<>();
+
+        if (tipoCampanyaId != null && campanyaId != null) {
+            asignacionesTurno = this.asignacionTurnoService.filtrarPorTipoyCampanya(tipoCampanyaId, campanyaId);
+        }
+
+        model.addAttribute("asignacionesTurno", asignacionesTurno);
+        model.addAttribute("tipoCampanyaActual", tipoCampanyaId);
+        model.addAttribute("campanyaActual", campanyaId);
+
+        return "turnos/asignacion_turno";
+    }
+
 
     @PostMapping("/buscarTurno")
     public String buscarTurno(@RequestParam(value = "id", required = false) Integer idTienda,
