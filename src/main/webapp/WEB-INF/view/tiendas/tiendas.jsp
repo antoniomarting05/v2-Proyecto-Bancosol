@@ -5,12 +5,6 @@ IA: 20%
 */
 --%>
 <%@ page import="java.util.List" %>
-<%@ page import="com.leftjoiners.bancosol.proyectobackend.entity.TiendaCampanyaEntity" %>
-<%@ page import="com.leftjoiners.bancosol.proyectobackend.entity.TiendaEntity" %>
-<%@ page import="com.leftjoiners.bancosol.proyectobackend.entity.CadenaEntity" %>
-<%@ page import="com.leftjoiners.bancosol.proyectobackend.entity.ZonaEntity" %>
-<%@ page import="com.leftjoiners.bancosol.proyectobackend.entity.LocalidadEntity" %>
-<%@ page import="com.leftjoiners.bancosol.proyectobackend.entity.ColaboradorEntity" %>
 <%@ page import="com.leftjoiners.bancosol.proyectobackend.dto.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -106,20 +100,16 @@ IA: 20%
                     <table class="modernTable">
                         <thead>
                         <tr>
-                            <th rowspan="2">Tienda</th>
-                            <th rowspan="2">Cadena</th>
-                            <th rowspan="2">Lineales</th>
-                            <th rowspan="2">Domicilio</th>
-                            <th rowspan="2">Zona</th>
-                            <th rowspan="2">Localidad</th>
-                            <th colspan="2" style="text-align: center;">Coordinadores</th>
-                            <th rowspan="2"></th>
-                            <th rowspan="2"></th>
-                            <th rowspan="2"></th>
-                        </tr>
-                        <tr>
-                            <th>Primavera</th>
-                            <th>Gran Recogida</th>
+                            <th>Tienda</th>
+                            <th>Cadena</th>
+                            <th>Lineales</th>
+                            <th>Domicilio</th>
+                            <th>Zona</th>
+                            <th>Localidad</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
                         </tr>
                         </thead>
 
@@ -133,34 +123,7 @@ IA: 20%
                             <td><%= tienda.getLocalidad().getMunicipio().getZona().getNombre() %></td>
                             <td><%= tienda.getLocalidad().getNombre() %></td>
 
-                            <%
-                                String coordPrimavera = "Sin asignar";
-                                String coordGR = "Sin asignar";
 
-                                if (tienda.getTiendasCampanya() != null) {
-                                    for(TiendaCampanya c : tienda.getTiendasCampanya()) {
-                                        if(c.getCampanya().getTipoCampanya().getId() == 2 && c.getCoordinador() != null) {
-                                            coordPrimavera = c.getCoordinador().getNombre();
-                                        } else if (c.getCampanya().getTipoCampanya().getId() == 1 && c.getCoordinador() != null) {
-                                            coordGR = c.getCoordinador().getNombre();
-                                        }
-                                    }
-                                }
-                            %>
-
-                            <%-- Primavera (Fijo: 1 sola columna) --%>
-                            <td>
-                                <div style="display: flex; justify-content: space-between; align-items: center; gap: 5px;">
-                                    <span class="small-td"><%= coordPrimavera %></span>
-                                </div>
-                            </td>
-
-                            <%-- Gran Recogida (Fijo: 1 sola columna) --%>
-                            <td>
-                                <div style="display: flex; justify-content: space-between; align-items: center; gap: 5px;">
-                                    <span class="small-td"><%= coordGR %></span>
-                                </div>
-                            </td>
 
                             <%-- Botones de acción --%>
                             <td><a href="/tiendas/crearTienda?id=<%=tienda.getId()%>" class="interact-tienda-btn editar-btn">Editar</a> </td>
@@ -170,6 +133,8 @@ IA: 20%
                                 Eliminar
                             </a> </td>
                             <td><a href="/tiendas/verTienda?id=<%=tienda.getId()%>" class="interact-tienda-btn ver-btn">Ver</a> </td>
+                            <td><a href="/tiendas/asignarParticipacion?id=<%=tienda.getId()%>" class="interact-tienda-btn asignacion-btn">Asignar Participación</a> </td>
+
                         </tr>
                         <% } %>
                         </tbody>

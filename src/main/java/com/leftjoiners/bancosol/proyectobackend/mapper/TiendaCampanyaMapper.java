@@ -5,10 +5,7 @@ IA: 20%
 
 package com.leftjoiners.bancosol.proyectobackend.mapper;
 
-import com.leftjoiners.bancosol.proyectobackend.dto.Campanya;
-import com.leftjoiners.bancosol.proyectobackend.dto.Tienda;
-import com.leftjoiners.bancosol.proyectobackend.dto.TiendaCampanya;
-import com.leftjoiners.bancosol.proyectobackend.dto.Usuario;
+import com.leftjoiners.bancosol.proyectobackend.dto.*;
 import com.leftjoiners.bancosol.proyectobackend.entity.TiendaCampanyaEntity;
 import org.springframework.stereotype.Component;
 import java.util.stream.Collectors;
@@ -37,6 +34,12 @@ public class TiendaCampanyaMapper extends MapperDTO<TiendaCampanya, TiendaCampan
             Campanya c = new Campanya();
             c.setId(entity.getCampanya().getId());
             c.setNombre(entity.getCampanya().getNombre());
+            if (entity.getCampanya().getTipoCampanya() != null) {
+                TipoCampanya tipoCampanya = new TipoCampanya();
+                tipoCampanya.setId(entity.getCampanya().getTipoCampanya().getId());
+                tipoCampanya.setNombre(entity.getCampanya().getTipoCampanya().getNombre());
+                c.setTipoCampanya(tipoCampanya);
+            }
             dto.setCampanya(c);
         }
 

@@ -307,3 +307,15 @@
 .eliminar-btn:hover{
     background-color: #fecaca;
 }
+
+
+.asignacion-btn {
+    background-color: #c4dbfb;
+    color: #001832;
+    border: 1px solid #c7dbf5;
+    text-wrap: nowrap;
+}
+
+.asignacion-btn:hover {
+    box-shadow: 0 4px 10px rgba(18, 60, 105, 0.15);
+}

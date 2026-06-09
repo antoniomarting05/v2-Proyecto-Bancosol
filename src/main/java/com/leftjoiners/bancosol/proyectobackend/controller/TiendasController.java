@@ -5,9 +5,13 @@ IA: 10%
 package com.leftjoiners.bancosol.proyectobackend.controller;
 
 import com.leftjoiners.bancosol.proyectobackend.dao.*;
+import com.leftjoiners.bancosol.proyectobackend.dto.Campanya;
 import com.leftjoiners.bancosol.proyectobackend.dto.Tienda;
+import com.leftjoiners.bancosol.proyectobackend.dto.TiendaCampanya;
+import com.leftjoiners.bancosol.proyectobackend.dto.TipoCampanya;
 import com.leftjoiners.bancosol.proyectobackend.entity.*;
 import com.leftjoiners.bancosol.proyectobackend.service.*;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
@@ -26,6 +30,9 @@ import java.util.List;
 public class TiendasController {
 
     private final TiendaService tiendaService;
+    private final TiendaCampanyaService tiendaCampanyaService;
+    private final TipoCampanyaService tipoCampanyaService;
+    private final CampanyasService campanyasService;
     private final CadenaService cadenaService;
     private final ZonaService zonaService;
     private final LocalidadService localidadService;
@@ -137,4 +144,49 @@ public class TiendasController {
         model.addAttribute("coordinadores", this.usuarioService.listarCoordinadores());
         model.addAttribute("capitanes", this.usuarioService.listarCapitanes());
     }
+
+
+    @GetMapping("/asignarParticipacion")
+    public String asignarParicipacion(@RequestParam("id") Integer idTienda, Model model) {
+        Tienda tienda = this.tiendaService.buscarTienda(idTienda);
+        List<TiendaCampanya> tiendasCampanya = this.tiendaCampanyaService.buscarTiendasCampanyaPorTienda(tienda.getId());
+        List<TipoCampanya> tipoCampanyas = this.tipoCampanyaService.listarTipoCampanyas();
+        List<Campanya> campanyas = this.campanyasService.listarCampanyas();
+
+        model.addAttribute("tienda", tienda);
+        model.addAttribute("tiendasCampanya", tiendasCampanya);
+        model.addAttribute("tipoCampanyas", tipoCampanyas);
+        model.addAttribute("campanyas", campanyas);
+        model.addAttribute("currentSection", "tiendas");
+
+        return "tiendas/asignar_participacion";
+    }
+
+
+    /*
+     Este endpoint se ha realizado usando la propia request porque no se ha visto
+     en clase cómo hacer un controlador con un número indeterminado de parámetros.
+
+     Esto es así porque el administrador tiene una cantidad de Selects dinámicos
+     dependiendo de cuantas Campañas hayan, por eso no sabemos de primeras cuales
+     van a ser todos los parámetros.
+     */
+    @PostMapping("/guardarParticipacion")
+    public String guardarParticipacion(@RequestParam("idTienda") Integer idTienda,
+                                       HttpServletRequest request) {
+
+        List<TipoCampanya> tipos = this.tipoCampanyaService.listarTipoCampanyas();
+
+        for (TipoCampanya tipo : tipos) {
+            String valorSeleccionado = request.getParameter("tipo_campanya_" + tipo.getId());
+
+            if (valorSeleccionado != null) {
+                Integer idCampanyaSeleccionada = Integer.parseInt(valorSeleccionado);
+                this.tiendaCampanyaService.actualizarParticipacion(idTienda, tipo.getId(), idCampanyaSeleccionada);
+            }
+        }
+
+        return "redirect:/tiendas";
+    }
+
 }
