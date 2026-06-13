@@ -5,9 +5,7 @@ IA: 20%
 */
 --%>
 <%@ page import="java.util.List" %>
-<%@ page import="com.leftjoiners.bancosol.proyectobackend.entity.*" %>
 <%@ page import="com.leftjoiners.bancosol.proyectobackend.dto.*" %>
-<%@ page import="org.springframework.cglib.core.Local" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
