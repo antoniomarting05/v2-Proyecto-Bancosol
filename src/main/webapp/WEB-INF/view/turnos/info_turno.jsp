@@ -3,7 +3,6 @@
 <%@ page import="com.leftjoiners.bancosol.proyectobackend.dto.Usuario" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    Integer id = (Integer) request.getAttribute("id");
     Integer turno = (Integer) request.getAttribute("turno");
     Integer lineales = (Integer) request.getAttribute("lineales");
     Integer linealActual = (Integer) request.getAttribute("linealActual");
@@ -52,9 +51,7 @@
             }
         %>
     </div>
-
     <%
-
         }
     %>
     <div id="volunteer-info">
@@ -76,7 +73,6 @@
             <p><%= asignacionTurno.getObservaciones()%></p>
         </div>
         <% } else { %>
-        <!-- Mostrar estado "vacante" si el turno no existe aún -->
         <div id="volunteer-name">
             <div>
                 <p id="lbl-capitan" style="color: gray; font-style: italic;">Sin asignar</p>

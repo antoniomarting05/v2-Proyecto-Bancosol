@@ -86,9 +86,6 @@ contentType="text/html;charset=UTF-8" language="java" %>
     </div>
   </div>
 </main>
-
-  <jsp:include page="../shared/footer.jsp"/>
-
   <script>
     // Lógica del desplegable de la derecha:
 	const table = document.querySelector("#table-body");

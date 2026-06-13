@@ -260,9 +260,6 @@ IA: 20%
     </section>
 </main>
 
-<jsp:include page="../shared/footer.jsp"/>
-
-
 
 <body></body>
 

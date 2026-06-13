@@ -145,8 +145,5 @@ IA: 20%
     </div>
 </main>
 
-<jsp:include page="../shared/footer.jsp"/>
-
-
 </body>
 </html>
