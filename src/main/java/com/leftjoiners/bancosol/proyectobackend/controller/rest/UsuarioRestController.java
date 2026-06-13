@@ -52,18 +52,10 @@ public class UsuarioRestController {
         );
     }
 
-    @DeleteMapping("/coordinadores/{id}")
-    public void eliminarCoordinador(@PathVariable Integer id) {
-        if (id != null) {
-            usuarioService.eliminarUsuarios(List.of(id));
-        }
-    }
-
     @DeleteMapping("/coordinadores")
     public void eliminarCoordinadores(@RequestBody List<Integer> ids) {
         usuarioService.eliminarUsuarios(ids);
     }
-
     @GetMapping("/capitanes")
     public List<Usuario> getCapitanes() {
         return usuarioService.listarCapitanes();
