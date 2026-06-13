@@ -86,6 +86,7 @@ public class TiendasController {
         if (isEditando) {
             Tienda tienda = this.tiendaService.buscarTienda(idTienda);
             model.addAttribute("tiendaActual", tienda);
+            model.addAttribute("campanyasDeLaTienda", this.campanyasService.buscarCampanyasParticipantes(idTienda));
         }
 
         this.cargarDesplegablesFormulario(model);
@@ -104,12 +105,22 @@ public class TiendasController {
             @RequestParam(value = "distritoId", required = false) Integer distritoId,
             @RequestParam("cadenaId") Integer cadenaId,
             @RequestParam("localidadId") Integer localidadId,
-            @RequestParam(value = "coordinadorPrimaveraId", required = false) Integer coordinadorPrimaveraId,
-            @RequestParam(value = "coordinadorGRId", required = false) Integer coordinadorGRId,
-            @RequestParam(value = "capitanId", required = false) Integer capitanId) {
+            @RequestParam(value = "capitanId", required = false) Integer capitanId,
+            @RequestParam(value = "campanyaIds", required = false) List<Integer> campanyaIds,
+            @RequestParam(value = "coordinadorIds", required = false) List<Integer> coordinadorIds) {
 
         this.tiendaService.guardarTienda(id, nombre, lineales, domicilio, codigoPostal, distritoId,
-                cadenaId, localidadId, coordinadorPrimaveraId, coordinadorGRId, capitanId);
+                cadenaId, localidadId, capitanId);
+
+        if (campanyaIds != null) {
+            for (int i = 0; i < campanyaIds.size(); i++) {
+                Integer cId = campanyaIds.get(i);
+                Integer uId = (coordinadorIds != null && i < coordinadorIds.size()) ? coordinadorIds.get(i) : null;
+
+                // actualizo coordinadores
+                this.tiendaService.actualizarCoordinadorEnCampanya(id, cId, uId);
+            }
+        }
 
         return "redirect:/tiendas";
     }
@@ -123,6 +134,8 @@ public class TiendasController {
         model.addAttribute("editando", false);
         model.addAttribute("viendo", true);
         model.addAttribute("currentSection", "tiendas");
+
+        model.addAttribute("campanyasDeLaTienda", this.campanyasService.buscarCampanyasParticipantes(idTienda));
 
         this.cargarDesplegablesFormulario(model);
 

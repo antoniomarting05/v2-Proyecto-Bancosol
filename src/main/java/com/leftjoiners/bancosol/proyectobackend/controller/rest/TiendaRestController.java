@@ -71,8 +71,6 @@ public class TiendaRestController {
                 request.distritoId(),
                 request.cadenaId(),
                 request.localidadId(),
-                request.coordinadorPrimaveraId(),
-                request.coordinadorGRId(),
                 request.capitanId()
         );
     }

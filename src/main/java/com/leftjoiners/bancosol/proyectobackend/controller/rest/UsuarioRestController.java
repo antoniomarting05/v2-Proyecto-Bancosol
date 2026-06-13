@@ -21,7 +21,7 @@ public class UsuarioRestController {
 
     @GetMapping("/coordinadores")
     public List<Usuario> getCoordinadores() {
-        return usuarioService.listarCoordinadores(); // Ajusta según tu lógica de filtrado
+        return usuarioService.listarCoordinadores();
     }
 
     @GetMapping("/capitanes")
