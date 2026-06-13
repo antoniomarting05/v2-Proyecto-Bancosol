@@ -16,10 +16,14 @@ public class Usuario {
     private String nombre;
     private String telefono;
     private String email;
+    private Integer idEntidad;
     private String entidad;
+    private Integer idZonaAsignada;
     private String zonaAsignada;
+    private Integer idLocalidad;
     private String localidad;
     private Integer cp;
+    private Integer idDistrito;
     private String distrito;
 
     private List<Integer> colaboradoresCoordinados;

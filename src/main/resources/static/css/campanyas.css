@@ -266,9 +266,18 @@
     margin: 0 auto;
 }
 
+.coordinadores-list-wrapper {
+    max-width: none;
+}
+
 .campanya-table-card {
     padding: 0;
     overflow: hidden;
+}
+
+.coordinadores-table-card {
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 /* ============================ */
 
@@ -311,6 +320,55 @@
 /* ============================ */
 
 
+
+.coordinadores-table {
+    min-width: 0;
+}
+
+.coordinadores-table th:nth-child(1),
+.coordinadores-table td:nth-child(1) {
+    width: 8%;
+}
+
+.coordinadores-table th:nth-child(2),
+.coordinadores-table td:nth-child(2) {
+    width: 11%;
+}
+
+.coordinadores-table th:nth-child(3),
+.coordinadores-table td:nth-child(3) {
+    width: 12%;
+}
+
+.coordinadores-table th:nth-child(4),
+.coordinadores-table td:nth-child(4) {
+    width: 12%;
+}
+
+.coordinadores-table th:nth-child(5),
+.coordinadores-table td:nth-child(5) {
+    width: 10%;
+}
+
+.coordinadores-table th:nth-child(6),
+.coordinadores-table td:nth-child(6) {
+    width: 18%;
+}
+
+.coordinadores-table th:nth-child(7),
+.coordinadores-table td:nth-child(7) {
+    width: 7%;
+}
+
+.coordinadores-table th:nth-child(8),
+.coordinadores-table td:nth-child(8) {
+    width: 10%;
+}
+
+.coordinadores-table th:nth-child(9),
+.coordinadores-table td:nth-child(9) {
+    width: 12%;
+}
 
 .campanya-list-actions {
     display: flex;
