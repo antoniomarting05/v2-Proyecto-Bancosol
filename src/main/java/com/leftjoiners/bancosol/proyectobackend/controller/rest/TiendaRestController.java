@@ -12,7 +12,6 @@ import com.leftjoiners.bancosol.proyectobackend.service.TiendaService;
 import com.leftjoiners.bancosol.proyectobackend.service.TipoCampanyaService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -57,7 +56,9 @@ public class TiendaRestController {
             Integer localidadId,
             Integer coordinadorPrimaveraId,
             Integer coordinadorGRId,
-            Integer capitanId
+            Integer capitanId,
+            List<Integer> campanyaIds,
+            List<Integer> coordinadorIds
     ) {}
 
     @PostMapping("/guardar")
@@ -73,6 +74,18 @@ public class TiendaRestController {
                 request.localidadId(),
                 request.capitanId()
         );
+
+        if (request.id() != null && request.campanyaIds() != null) {
+            for (int i = 0; i < request.campanyaIds().size(); i++) {
+                Integer cId = request.campanyaIds().get(i);
+
+                // Extraemos el coordinador correspondiente, controlando que la lista no sea nula y tenga el índice
+                Integer uId = (request.coordinadorIds() != null && i < request.coordinadorIds().size())
+                        ? request.coordinadorIds().get(i) : null;
+
+                this.tiendaService.actualizarCoordinadorEnCampanya(request.id(), cId, uId);
+            }
+        }
     }
 
     @DeleteMapping("/eliminar/{id}")
