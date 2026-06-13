@@ -12,6 +12,8 @@ import com.leftjoiners.bancosol.proyectobackend.service.TiendaService;
 import com.leftjoiners.bancosol.proyectobackend.service.TipoCampanyaService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,10 +23,11 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/api/tienda")
 public class TiendaRestController {
-
     private final TiendaService tiendaService;
     private final TiendaCampanyaService tiendaCampanyaService;
     private final TipoCampanyaService tipoCampanyaService;
+
+    // Parte de visualización y edición de tiendas: Daniel Robles Cantos
 
     @GetMapping("/")
     public List<Tienda> doInit() {
@@ -45,45 +48,48 @@ public class TiendaRestController {
         return this.tiendaService.filtrarTiendas(cadenaId, localidadId, zonaId);
     }
 
-    public record TiendaRequest(
-            Integer id,
-            String nombre,
-            Integer lineales,
-            String domicilio,
-            String codigoPostal,
-            Integer distritoId,
-            Integer cadenaId,
-            Integer localidadId,
-            Integer coordinadorPrimaveraId,
-            Integer coordinadorGRId,
-            Integer capitanId,
-            List<Integer> campanyaIds,
-            List<Integer> coordinadorIds
-    ) {}
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class TiendaRequest {
+        private Integer id;
+        private String nombre;
+        private Integer lineales;
+        private String domicilio;
+        private String codigoPostal;
+        private Integer distritoId;
+        private Integer cadenaId;
+        private Integer localidadId;
+        private Integer coordinadorPrimaveraId;
+        private Integer coordinadorGRId;
+        private Integer capitanId;
+        private List<Integer> campanyaIds;
+        private List<Integer> coordinadorIds;
+    }
 
     @PostMapping("/guardar")
     public void guardarTienda(@RequestBody TiendaRequest request) {
         this.tiendaService.guardarTienda(
-                request.id(),
-                request.nombre(),
-                request.lineales(),
-                request.domicilio(),
-                request.codigoPostal(),
-                request.distritoId(),
-                request.cadenaId(),
-                request.localidadId(),
-                request.capitanId()
+                request.getId(),
+                request.getNombre(),
+                request.getLineales(),
+                request.getDomicilio(),
+                request.getCodigoPostal(),
+                request.getDistritoId(),
+                request.getCadenaId(),
+                request.getLocalidadId(),
+                request.getCapitanId()
         );
 
-        if (request.id() != null && request.campanyaIds() != null) {
-            for (int i = 0; i < request.campanyaIds().size(); i++) {
-                Integer cId = request.campanyaIds().get(i);
+        if (request.getId() != null && request.getCampanyaIds() != null) {
+            for (int i = 0; i < request.getCampanyaIds().size(); i++) {
+                Integer cId = request.getCampanyaIds().get(i);
 
                 // Extraemos el coordinador correspondiente, controlando que la lista no sea nula y tenga el índice
-                Integer uId = (request.coordinadorIds() != null && i < request.coordinadorIds().size())
-                        ? request.coordinadorIds().get(i) : null;
+                Integer uId = (request.getCoordinadorIds() != null && i < request.getCoordinadorIds().size())
+                        ? request.getCoordinadorIds().get(i) : null;
 
-                this.tiendaService.actualizarCoordinadorEnCampanya(request.id(), cId, uId);
+                this.tiendaService.actualizarCoordinadorEnCampanya(request.getId(), cId, uId);
             }
         }
     }
@@ -94,6 +100,9 @@ public class TiendaRestController {
             this.tiendaService.eliminarTienda(id);
         }
     }
+
+
+    // Parte de Asignación de Participación: Javier Urbaneja Benítez
 
     @GetMapping("/asignarParticipacion/{id}")
     public List<TiendaCampanya> asignarParicipacion(@PathVariable Integer id) {
@@ -108,8 +117,8 @@ public class TiendaRestController {
     en clase cómo hacer un controlador con un número indeterminado de parámetros.
 
     Esto es así porque el administrador tiene una cantidad de Selects dinámicos
-    dependiendo de cuantas Campañas hayan, por eso no sabemos de primeras cuales
-    van a ser todos los parámetros.
+    dependiendo de cuantos tipos de campañas existen, por eso no sabemos de primeras
+    cuales van a ser todos los parámetros que recibe el Endpoint.
     */
     @PostMapping("/guardarParticipacion")
     public void guardarParticipacion(@RequestParam("idTienda") Integer idTienda,

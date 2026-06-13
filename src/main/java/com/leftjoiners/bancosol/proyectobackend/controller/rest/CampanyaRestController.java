@@ -4,6 +4,8 @@ import com.leftjoiners.bancosol.proyectobackend.dto.AsignacionTurno;
 import com.leftjoiners.bancosol.proyectobackend.dto.Campanya;
 import com.leftjoiners.bancosol.proyectobackend.service.CampanyasService;
 import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -27,27 +29,6 @@ public class CampanyaRestController {
         return this.campanyasService.buscarCampanya(id);
     }
 
-    public record CampanyaRequest(
-            Integer id,
-            String nombre,
-            Integer idTipo,
-            LocalDate fechaInicio,
-            LocalDate fechaFin,
-            List<Integer> cadenasSeleccionadas
-    ) {}
-
-    @PostMapping("/guardar")
-    public void guardarCampanya(@RequestBody CampanyaRequest request) {
-        this.campanyasService.guardarCampanya(
-                request.id(),
-                request.nombre(),
-                request.idTipo(),
-                request.fechaInicio(),
-                request.fechaFin(),
-                request.cadenasSeleccionadas()
-        );
-    }
-
     @DeleteMapping("/eliminar")
     public void eliminarCampanyas(@RequestBody List<Integer> ids) {
         if (ids != null && !ids.isEmpty()) {
@@ -69,5 +50,29 @@ public class CampanyaRestController {
     @GetMapping("/participantes/{idTienda}")
     public List<Campanya> getCampanyasParticipantes(@PathVariable Integer idTienda) {
         return this.campanyasService.buscarCampanyasParticipantes(idTienda);
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CampanyaRequest {
+        private Integer id;
+        private String nombre;
+        private Integer idTipo;
+        private LocalDate fechaInicio;
+        private LocalDate fechaFin;
+        private List<Integer> cadenasSeleccionadas;
+    }
+
+    @PostMapping("/guardar")
+    public void guardarCampanya(@RequestBody CampanyaRequest request) {
+        this.campanyasService.guardarCampanya(
+                request.getId(),
+                request.getNombre(),
+                request.getIdTipo(),
+                request.getFechaInicio(),
+                request.getFechaFin(),
+                request.getCadenasSeleccionadas()
+        );
     }
 }

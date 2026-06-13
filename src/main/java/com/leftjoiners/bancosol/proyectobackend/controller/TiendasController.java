@@ -40,6 +40,9 @@ public class TiendasController {
     private final DistritoService distritoService;
     private final UsuarioService usuarioService;
 
+
+    // Parte de visualización y edición de tiendas: Daniel Robles Cantos
+
     @GetMapping("")
     public String doTiendas(Model model) {
         model.addAttribute("tiendas", this.tiendaService.listarTiendas());
@@ -159,6 +162,9 @@ public class TiendasController {
     }
 
 
+
+    // Parte de Asignación de Participación: Javier Urbaneja Benítez
+
     @GetMapping("/asignarParticipacion")
     public String asignarParicipacion(@RequestParam("id") Integer idTienda, Model model) {
         Tienda tienda = this.tiendaService.buscarTienda(idTienda);
@@ -177,13 +183,13 @@ public class TiendasController {
 
 
     /*
-     Este endpoint se ha realizado usando la propia request porque no se ha visto
-     en clase cómo hacer un controlador con un número indeterminado de parámetros.
+    Este endpoint se ha realizado usando la propia request porque no se ha visto
+    en clase cómo hacer un controlador con un número indeterminado de parámetros.
 
-     Esto es así porque el administrador tiene una cantidad de Selects dinámicos
-     dependiendo de cuantas Campañas hayan, por eso no sabemos de primeras cuales
-     van a ser todos los parámetros.
-     */
+    Esto es así porque el administrador tiene una cantidad de Selects dinámicos
+    dependiendo de cuantos tipos de campañas existen, por eso no sabemos de primeras
+    cuales van a ser todos los parámetros que recibe el Endpoint.
+    */
     @PostMapping("/guardarParticipacion")
     public String guardarParticipacion(@RequestParam("idTienda") Integer idTienda,
                                        HttpServletRequest request) {

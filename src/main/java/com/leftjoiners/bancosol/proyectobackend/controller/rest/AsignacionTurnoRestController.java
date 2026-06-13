@@ -6,6 +6,8 @@ import com.leftjoiners.bancosol.proyectobackend.dto.Turno;
 import com.leftjoiners.bancosol.proyectobackend.service.AsignacionTurnoService;
 import com.leftjoiners.bancosol.proyectobackend.service.TurnoService;
 import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalTime;
@@ -34,33 +36,6 @@ public class AsignacionTurnoRestController {
         return turnoService.buscarTurnoEspecifico(idTienda, turno, linealActual);
     }
 
-    public record TurnoRequest(
-            Integer idTurno,
-            Integer idTiendaCampanya,
-            Integer idTipoTurno,
-            Integer lineal,
-            Integer idColaborador,
-            Integer numVoluntarios,
-            LocalTime horaInicio,
-            LocalTime horaFin,
-            String observaciones
-    ) {}
-
-    @PostMapping("/guardar")
-    public void guardarTurno(@RequestBody TurnoRequest request) {
-        this.turnoService.guardarTurno(
-                    request.idTurno(),
-                    request.idTiendaCampanya(),
-                    request.idTipoTurno(),
-                    request.lineal(),
-                    request.idColaborador(),
-                    request.horaInicio(),
-                    request.horaFin(),
-                    request.numVoluntarios(),
-                    request.observaciones()
-        );
-    }
-
     @GetMapping("/filtrar/{tipoCampanyaId}/{campanyaId}")
     public List<AsignacionTurno> filtrarTurnos(@PathVariable Integer tipoCampanyaId,
                                                @PathVariable Integer campanyaId) {
@@ -71,6 +46,36 @@ public class AsignacionTurnoRestController {
         }
 
         return asignacionesTurno;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class TurnoRequest {
+        private Integer idTurno;
+        private Integer idTiendaCampanya;
+        private Integer idTipoTurno;
+        private Integer lineal;
+        private Integer idColaborador;
+        private Integer numVoluntarios;
+        private LocalTime horaInicio;
+        private LocalTime horaFin;
+        private String observaciones;
+    }
+
+    @PostMapping("/guardar")
+    public void guardarTurno(@RequestBody TurnoRequest request) {
+        this.turnoService.guardarTurno(
+                request.getIdTurno(),
+                request.getIdTiendaCampanya(),
+                request.getIdTipoTurno(),
+                request.getLineal(),
+                request.getIdColaborador(),
+                request.getHoraInicio(),
+                request.getHoraFin(),
+                request.getNumVoluntarios(),
+                request.getObservaciones()
+        );
     }
 }
 
