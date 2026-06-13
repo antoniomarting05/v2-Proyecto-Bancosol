@@ -1,3 +1,6 @@
+/*
+Javier Urbaneja Benítez: 100%
+*/
 package com.leftjoiners.bancosol.proyectobackend.service;
 
 import com.leftjoiners.bancosol.proyectobackend.dao.CadenaRepository;
@@ -25,11 +28,6 @@ public class TipoCampanyaService {
     public List<TipoCampanya> listarTipoCampanyas() {
         List<TipoCampanyaEntity> tipoCampanyas = this.tipoCampanyasRepository.findAll();
         return this.tipoCampanyaMapper.toDTOList(tipoCampanyas);
-    }
-
-    public TipoCampanya buscarTipoCampanya(Integer id) {
-        TipoCampanyaEntity tipoCampanya = this.tipoCampanyasRepository.findById(id).orElse(null);
-        return this.tipoCampanyaMapper.toDTO(tipoCampanya);
     }
 
     public List<TipoCampanya> buscarTipoCampanyaParticipantes (Integer idTienda) {

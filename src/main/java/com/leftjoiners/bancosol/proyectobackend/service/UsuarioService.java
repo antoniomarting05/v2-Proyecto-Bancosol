@@ -1,3 +1,6 @@
+/*
+Javier Urbaneja Benítez 10%
+*/
 package com.leftjoiners.bancosol.proyectobackend.service;
 
 import com.leftjoiners.bancosol.proyectobackend.dao.*;

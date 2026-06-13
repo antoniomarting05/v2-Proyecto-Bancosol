@@ -1,3 +1,7 @@
+/*
+Antonio Martín García: 80%
+Javier Urbaneja Benítez: 20%
+*/
 package com.leftjoiners.bancosol.proyectobackend.service;
 
 import com.leftjoiners.bancosol.proyectobackend.dao.*;

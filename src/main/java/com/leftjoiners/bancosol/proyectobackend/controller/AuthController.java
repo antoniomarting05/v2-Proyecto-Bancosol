@@ -1,3 +1,7 @@
+/*
+Javier Urbaneja Benítez: 90%
+IA: 10%
+*/
 package com.leftjoiners.bancosol.proyectobackend.controller;
 
 import com.leftjoiners.bancosol.proyectobackend.dto.Usuario;

@@ -20,11 +20,6 @@ public class TipoTurnoService {
     private final TipoTurnoRepository tipoTurnoRepository;
     private final TipoTurnoMapper tipoTurnoMapper;
 
-    public List<TipoTurno> listarTurnos () {
-        List<TipoTurnoEntity> tiposTurnos = this.tipoTurnoRepository.findAll();
-        return this.tipoTurnoMapper.toDTOList(tiposTurnos);
-    }
-
     public TipoTurno buscarTipoTurno (Integer id) {
         TipoTurnoEntity tipoTurno = this.tipoTurnoRepository.findById(id).orElse(null);
         return this.tipoTurnoMapper.toDTO(tipoTurno);
