@@ -65,4 +65,9 @@ public class CampanyaRestController {
 
         return campanyas;
     }
+
+    @GetMapping("/participantes/{idTienda}")
+    public List<Campanya> getCampanyasParticipantes(@PathVariable Integer idTienda) {
+        return this.campanyasService.buscarCampanyasParticipantes(idTienda);
+    }
 }

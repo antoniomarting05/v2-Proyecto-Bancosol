@@ -175,7 +175,7 @@ public class TiendasController {
     public String guardarParticipacion(@RequestParam("idTienda") Integer idTienda,
                                        HttpServletRequest request) {
 
-        List<TipoCampanya> tipos = this.tipoCampanyaService.listarTipoCampanyas();
+        List<TipoCampanya> tipos = this.tipoCampanyaService.buscarTipoCampanyaParticipantes(idTienda);
 
         for (TipoCampanya tipo : tipos) {
             String valorSeleccionado = request.getParameter("tipo_campanya_" + tipo.getId());

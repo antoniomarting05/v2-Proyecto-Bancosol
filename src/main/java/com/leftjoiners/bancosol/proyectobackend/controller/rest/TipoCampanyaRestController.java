@@ -5,10 +5,7 @@ import com.leftjoiners.bancosol.proyectobackend.dto.Campanya;
 import com.leftjoiners.bancosol.proyectobackend.dto.TipoCampanya;
 import com.leftjoiners.bancosol.proyectobackend.service.TipoCampanyaService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,5 +19,10 @@ public class TipoCampanyaRestController {
     @GetMapping("/")
     public List<TipoCampanya> doInit(){
         return this.tipoCampanyaService.listarTipoCampanyas();
+    }
+
+    @GetMapping("/participantes/{idTienda}")
+    public List<TipoCampanya> getTipoCampanyasParticipantes(@PathVariable Integer idTienda) {
+        return this.tipoCampanyaService.buscarTipoCampanyaParticipantes(idTienda);
     }
 }
