@@ -1,5 +1,6 @@
 /*
-Daniel Robles Cantos 90%
+Daniel Robles Cantos: 70%
+Javier Urbaneja Benítez: 20%
 IA: 10%
 */
 package com.leftjoiners.bancosol.proyectobackend.controller;
@@ -39,6 +40,9 @@ public class TiendasController {
     private final MunicipioService municipioService;
     private final DistritoService distritoService;
     private final UsuarioService usuarioService;
+
+
+    // Parte de visualización y edición de tiendas: Daniel Robles Cantos
 
     @GetMapping("")
     public String doTiendas(Model model) {
@@ -86,6 +90,7 @@ public class TiendasController {
         if (isEditando) {
             Tienda tienda = this.tiendaService.buscarTienda(idTienda);
             model.addAttribute("tiendaActual", tienda);
+            model.addAttribute("campanyasDeLaTienda", this.campanyasService.buscarCampanyasParticipantes(idTienda));
         }
 
         this.cargarDesplegablesFormulario(model);
@@ -104,12 +109,22 @@ public class TiendasController {
             @RequestParam(value = "distritoId", required = false) Integer distritoId,
             @RequestParam("cadenaId") Integer cadenaId,
             @RequestParam("localidadId") Integer localidadId,
-            @RequestParam(value = "coordinadorPrimaveraId", required = false) Integer coordinadorPrimaveraId,
-            @RequestParam(value = "coordinadorGRId", required = false) Integer coordinadorGRId,
-            @RequestParam(value = "capitanId", required = false) Integer capitanId) {
+            @RequestParam(value = "capitanId", required = false) Integer capitanId,
+            @RequestParam(value = "campanyaIds", required = false) List<Integer> campanyaIds,
+            @RequestParam(value = "coordinadorIds", required = false) List<Integer> coordinadorIds) {
 
         this.tiendaService.guardarTienda(id, nombre, lineales, domicilio, codigoPostal, distritoId,
-                cadenaId, localidadId, coordinadorPrimaveraId, coordinadorGRId, capitanId);
+                cadenaId, localidadId, capitanId);
+
+        if (campanyaIds != null) {
+            for (int i = 0; i < campanyaIds.size(); i++) {
+                Integer cId = campanyaIds.get(i);
+                Integer uId = (coordinadorIds != null && i < coordinadorIds.size()) ? coordinadorIds.get(i) : null;
+
+                // actualizo coordinadores
+                this.tiendaService.actualizarCoordinadorEnCampanya(id, cId, uId);
+            }
+        }
 
         return "redirect:/tiendas";
     }
@@ -123,6 +138,8 @@ public class TiendasController {
         model.addAttribute("editando", false);
         model.addAttribute("viendo", true);
         model.addAttribute("currentSection", "tiendas");
+
+        model.addAttribute("campanyasDeLaTienda", this.campanyasService.buscarCampanyasParticipantes(idTienda));
 
         this.cargarDesplegablesFormulario(model);
 
@@ -146,12 +163,15 @@ public class TiendasController {
     }
 
 
+
+    // Parte de Asignación de Participación: Javier Urbaneja Benítez
+
     @GetMapping("/asignarParticipacion")
     public String asignarParicipacion(@RequestParam("id") Integer idTienda, Model model) {
         Tienda tienda = this.tiendaService.buscarTienda(idTienda);
         List<TiendaCampanya> tiendasCampanya = this.tiendaCampanyaService.buscarTiendasCampanyaPorTienda(tienda.getId());
-        List<TipoCampanya> tipoCampanyas = this.tipoCampanyaService.listarTipoCampanyas();
-        List<Campanya> campanyas = this.campanyasService.listarCampanyas();
+        List<TipoCampanya> tipoCampanyas = this.tipoCampanyaService.buscarTipoCampanyaParticipantes(idTienda);
+        List<Campanya> campanyas = this.campanyasService.buscarCampanyasParticipantes(idTienda);
 
         model.addAttribute("tienda", tienda);
         model.addAttribute("tiendasCampanya", tiendasCampanya);
@@ -164,18 +184,18 @@ public class TiendasController {
 
 
     /*
-     Este endpoint se ha realizado usando la propia request porque no se ha visto
-     en clase cómo hacer un controlador con un número indeterminado de parámetros.
+    Este endpoint se ha realizado usando la propia request porque no se ha visto
+    en clase cómo hacer un controlador con un número indeterminado de parámetros.
 
-     Esto es así porque el administrador tiene una cantidad de Selects dinámicos
-     dependiendo de cuantas Campañas hayan, por eso no sabemos de primeras cuales
-     van a ser todos los parámetros.
-     */
+    Esto es así porque el administrador tiene una cantidad de Selects dinámicos
+    dependiendo de cuantos tipos de campañas existen, por eso no sabemos de primeras
+    cuales van a ser todos los parámetros que recibe el Endpoint.
+    */
     @PostMapping("/guardarParticipacion")
     public String guardarParticipacion(@RequestParam("idTienda") Integer idTienda,
                                        HttpServletRequest request) {
 
-        List<TipoCampanya> tipos = this.tipoCampanyaService.listarTipoCampanyas();
+        List<TipoCampanya> tipos = this.tipoCampanyaService.buscarTipoCampanyaParticipantes(idTienda);
 
         for (TipoCampanya tipo : tipos) {
             String valorSeleccionado = request.getParameter("tipo_campanya_" + tipo.getId());

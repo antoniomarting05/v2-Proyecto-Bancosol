@@ -1,7 +1,14 @@
+<%--
+Marina Fernández Serrano: 100%
+--%>
+
 <%@ page import="com.leftjoiners.bancosol.proyectobackend.entity.ColaboradorEntity" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.leftjoiners.bancosol.proyectobackend.entity.ColaboradorEntity" %>
-<%@ page import="com.leftjoiners.bancosol.proyectobackend.dto.Colaborador" %><%--
+<%@ page import="com.leftjoiners.bancosol.proyectobackend.dto.Colaborador" %>
+<%@ page import="com.leftjoiners.bancosol.proyectobackend.dto.Localidad" %>
+<%@ page import="com.leftjoiners.bancosol.proyectobackend.entity.UsuarioEntity" %>
+<%@ page import="com.leftjoiners.bancosol.proyectobackend.dto.Usuario" %><%--
   Created by IntelliJ IDEA.
   User: marin
   Date: 20/04/2026
@@ -18,6 +25,10 @@
 <body>
 <%
     List<Colaborador> colaboradores = (List<Colaborador>) request.getAttribute("colaboradores");
+    List<Localidad> localidades = (List<Localidad>) request.getAttribute("localidades");
+    List<Usuario> coordinadores = (List<Usuario>) request.getAttribute("coordinadores");
+    Integer localidadSeleccionada = (Integer) request.getAttribute("localidadSeleccionada");
+    Integer coordinadorSeleccionado = (Integer) request.getAttribute("coordinadorSeleccionado");
 %>
 <jsp:include page="../shared/navbar.jsp"/>
 
@@ -36,7 +47,33 @@
                 </a>
             </div>
         </div>
+        <div class="filtros-container">
+
+            <div class="filtro-group">
+                <label for="colaboraEn">Colabora en:</label>
+                <select name="colaboraEn" id="colaboraEn" class="btn-outline" style="padding: 5px 15px;">
+                    <option value="">Sin Filtro</option>
+                    <% for(Localidad l : localidades){ %>
+                    <option value="<%=l.getId()%>" <%= l.getId().equals(localidadSeleccionada) ? "selected" : ""%> > <%=l.getNombre()%></option>
+                    <% } %>
+                </select>
+            </div>
+
+            <div class="filtro-group">
+                <label for="coordinador">Filtrar por Coordinador</label>
+                <select name="coordinador" id="coordinador" class="btn-outline" style="padding: 5px 15px;">
+                    <option value="">Sin Filtro</option>
+                    <% for(Usuario u : coordinadores){ %>
+                    <option value="<%=u.getId()%>" <%= u.getId().equals(coordinadorSeleccionado) ? "selected" : ""%> ><%=u.getNombre()%></option>
+                    <% } %>
+                </select>
+            </div>
+
+        </div>
+
+
         <div class="page-wrapper">
+
             <div class="left-column">
                 <div class="table-container card">
                     <table class="modernTable">
@@ -164,6 +201,20 @@
             window.location.href = `/colaboradores/asignar?id=` + id;
         }
     })
+
+    // Lógica del filtrado de arriba
+    const colaboraEnSelect = document.querySelector("#colaboraEn");
+    const coordinadorSelect = document.querySelector("#coordinador");
+
+    function fetchFiltros() {
+        const idLocalidad = colaboraEnSelect.value;
+        const idCoordinador = coordinadorSelect.value;
+
+        window.location.href = "/colaboradores/filtrar?colaboraEn=" + idLocalidad + "&coordinador=" + idCoordinador;
+    }
+
+    colaboraEnSelect.addEventListener("change", fetchFiltros);
+    coordinadorSelect.addEventListener("change", fetchFiltros);
 </script>
 </body>
 </html>

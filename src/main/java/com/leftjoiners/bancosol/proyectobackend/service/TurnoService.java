@@ -32,7 +32,7 @@ public class TurnoService {
     }
 
     public Turno buscarTurnoEspecifico (Integer idTienda, Integer turno, Integer linealActual) {
-        TurnoEntity asignacionTurno = this.turnoRepository.buscarTurnoEspecifico(idTienda, turno, linealActual).orElse(null);
+        TurnoEntity asignacionTurno = this.turnoRepository.buscarTurnoEspecifico(idTienda, turno, linealActual);
         return this.turnoMapper.toDTO(asignacionTurno);
     }
 

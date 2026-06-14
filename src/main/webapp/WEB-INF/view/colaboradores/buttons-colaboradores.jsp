@@ -1,4 +1,8 @@
 <%--
+Marina Fernández Serrano: 100%
+--%>
+
+<%--
   Created by IntelliJ IDEA.
   User: marin
   Date: 06/05/2026

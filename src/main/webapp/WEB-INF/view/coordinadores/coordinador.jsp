@@ -66,7 +66,6 @@
                         <th>Correo electrónico</th>
                         <th>Tiendas</th>
                         <th>Usuario</th>
-                        <th>Contraseña</th>
                     </tr>
                     </thead>
 
@@ -98,7 +97,6 @@
                         <td><%= coordinador.getEmail() != null ? coordinador.getEmail() : "" %></td>
                         <td><%= coordinador.getTiendasCoordinadas() != null ? coordinador.getTiendasCoordinadas().size() : 0 %></td>
                         <td><%= coordinador.getUsuario() != null ? coordinador.getUsuario() : "" %></td>
-                        <td>********</td>
                     </tr>
                     <% } %>
                     <% } else { %>

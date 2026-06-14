@@ -1,3 +1,7 @@
+/*
+Marina Fernández Serrano: 100%
+*/
+
 package com.leftjoiners.bancosol.proyectobackend.controller;
 
 import com.leftjoiners.bancosol.proyectobackend.dao.ColaboradoresRespository;
@@ -12,6 +16,7 @@ import com.leftjoiners.bancosol.proyectobackend.service.LocalidadService;
 import com.leftjoiners.bancosol.proyectobackend.service.UsuarioService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,20 +38,43 @@ public class ColaboradoresController {
     @GetMapping("")
     public String doInit(Model model) {
         List<Colaborador> colaboradores = colaboradorService.listarColaboradores();
+        List<Localidad> localidades = localidadService.listarLocalidades();
+        List<Usuario> coordinadores = usuarioService.listarCoordinadores();
 
         model.addAttribute("colaboradores", colaboradores);
+        model.addAttribute("localidades", localidades);
+        model.addAttribute("coordinadores", coordinadores);
         model.addAttribute("currentSection", "colaboradores");
         return "colaboradores/colaboradores";
     }
 
-    @PostMapping("/buscarColaborador")
-    public String doBuscar(@RequestParam("id") Integer id,
-            Model model){
+    @GetMapping("/filtrar")
+    public String doFiltrar(@RequestParam(required = false, value = "colaboraEn") Integer idLocalidad,
+                            @RequestParam(required = false, value = "coordinador") Integer idCoordinador,
+                            Model model) {
+        List<Colaborador> colaboradores = colaboradorService.filtrarColaboradores(idLocalidad, idCoordinador);
+        List<Localidad> localidades = localidadService.listarLocalidades();
+        List<Usuario> coordinadores = usuarioService.listarCoordinadores();
 
-        Colaborador colaborador = colaboradorService.buscarColaborador(id);
+        model.addAttribute("colaboradores", colaboradores);
+        model.addAttribute("localidades", localidades);
+        model.addAttribute("coordinadores", coordinadores);
+        model.addAttribute("localidadSeleccionada", idLocalidad);
+        model.addAttribute("coordinadorSeleccionado", idCoordinador);
+        model.addAttribute("currentSection", "colaboradores");
+
+        return "colaboradores/colaboradores";
+    }
+
+
+    @PostMapping("/buscarColaborador")
+    public String buscarColaborador(@RequestParam("id") Integer id, Model model) {
+        Colaborador colaborador = this.colaboradorService.buscarColaborador(id);
         ContactoColaborador contactoColaborador = contactoColaboradorService.buscarContactoPrincipalDe(id);
+
         model.addAttribute("colaborador", colaborador);
         model.addAttribute("contactoPrincipal", contactoColaborador);
+
         return "colaboradores/info_colaboradores";
     }
 

@@ -114,7 +114,7 @@
         const params = new URLSearchParams();
         params.append("id", colaboradorActual);
 
-        fetch("/turnos/buscarColaborador", {
+        fetch("/colaboradores/buscarColaborador", {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"

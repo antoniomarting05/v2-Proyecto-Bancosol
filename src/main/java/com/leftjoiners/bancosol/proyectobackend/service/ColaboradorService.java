@@ -1,5 +1,5 @@
 /*
-Javier Urbaneja Benítez: 100%
+Marina Fernández Serrano: 100%
 */
 
 package com.leftjoiners.bancosol.proyectobackend.service;
@@ -18,6 +18,7 @@ import com.leftjoiners.bancosol.proyectobackend.mapper.ColaboradorMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -76,5 +77,10 @@ public class ColaboradorService {
 
             this.colaboradoresRespository.deleteById(id);
         }
+    }
+
+    public List<Colaborador> filtrarColaboradores(Integer idLocalidad, Integer idCoordinador) {
+        List<ColaboradorEntity> colaboradores = this.colaboradoresRespository.filtrarColaboradores(idLocalidad, idCoordinador);
+        return this.colaboradorMapper.toDTOList(colaboradores);
     }
 }

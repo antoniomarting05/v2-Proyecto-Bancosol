@@ -1,3 +1,6 @@
+/*
+Marina Fernández Serrano: 100%
+*/
 package com.leftjoiners.bancosol.proyectobackend.mapper;
 
 import com.leftjoiners.bancosol.proyectobackend.dto.Colaborador;

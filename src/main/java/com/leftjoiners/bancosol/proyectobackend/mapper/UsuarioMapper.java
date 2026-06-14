@@ -1,3 +1,7 @@
+/*
+Javier Urbaneja Benítez: 50%
+Daniel Robles Cantos: 50%
+*/
 package com.leftjoiners.bancosol.proyectobackend.mapper;
 
 import com.leftjoiners.bancosol.proyectobackend.dto.*;
@@ -16,8 +20,7 @@ public class UsuarioMapper extends MapperDTO<Usuario, UsuarioEntity> {
         dto.setId(entity.getId());
         dto.setNombre(entity.getNombre());
         dto.setCp(entity.getCp());
-        //dto.setContrasenya(entity.getContrasenya());
-        dto.setUsuario(entity.getUsuario());            //SIN ESTO EN REACT NO IBA
+        dto.setUsuario(entity.getUsuario());
         dto.setEmail(entity.getEmail());
         dto.setTelefono(entity.getTelefono());
         if (entity.getRol() != null) {

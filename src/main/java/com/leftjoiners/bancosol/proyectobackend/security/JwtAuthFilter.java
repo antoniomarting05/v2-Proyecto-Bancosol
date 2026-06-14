@@ -1,3 +1,10 @@
+/*
+Javier Urbaneja Benítez: 70%
+IA: 30%
+
+Documentación JWT: https://www.geeksforgeeks.org/springboot/spring-boot-3-0-jwt-authentication-with-spring-security-using-mysql-database/
+*/
+
 package com.leftjoiners.bancosol.proyectobackend.security;
 
 import com.leftjoiners.bancosol.proyectobackend.dto.Usuario;
@@ -24,8 +31,7 @@ import java.util.List;
 @Component
 @AllArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
-
-    private final JwtUtil jwtUtil; // Debe ser final para que Lombok lo incluya
+    private final JwtUtil jwtUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -36,13 +42,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String rol = null;
         String nombre = null;
 
-        // 1. Buscamos en la cabecera 'Authorization' (Para REST / Angular / React)
+        // Buscamos en la cabecera 'Authorization' (Cuando la petición viene del frontend)
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
         }
 
-        // 2. Si no está, buscamos en las Cookies (Para tus JSPs)
+        // Buscamos en las Cookies (Cuando la petición viene de la JSP)
         if (token == null && request.getCookies() != null) {
             for (Cookie cookie : request.getCookies()) {
                 if ("jwtToken".equals(cookie.getName())) {
@@ -51,7 +57,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             }
         }
 
-        // 3. Validamos
+
         if (token != null) {
             try {
                 username = jwtUtil.extractUsername(token);
@@ -66,7 +72,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             }
         }
 
-        // 4. Autenticamos
+
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             if (jwtUtil.validateToken(token)) {
                 List<SimpleGrantedAuthority> authorities = new ArrayList<>();
@@ -82,6 +88,21 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.getContext().setAuthentication(authToken);
 
+                /*
+                Metemos la info básica del usuario en la request porque al ser un servidor
+                completamente Stateless, se nos borra el usuario al meterlo en la sesión.
+
+                Esto nos sirve para ver si el rol del usuario tiene los permisos necesarios
+                para pinchar en algunos botones. Esta comprobación es simplemente a nivel de
+                jsp (el usuario podría dirigirse a esas pestañas escribiendoq la url o
+                quitando el disable del botón con F12)
+
+                Para que sea más seguro, en SecurityConfig.java tenemos varios filtros que
+                prohiben el acceso a ciertas pestañas a nivel de Backend (compara el rol del
+                JWT y no te deja hacer peticion a las distintas url).
+
+                (Sacado de la documentación de Spring Boot).
+                */
                 Usuario usuarioInfo =  new Usuario();
                 usuarioInfo.setUsuario(username);
                 usuarioInfo.setNombre(nombre != null ? nombre : "Usuario");

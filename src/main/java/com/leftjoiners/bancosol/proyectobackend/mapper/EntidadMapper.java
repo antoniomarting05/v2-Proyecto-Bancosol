@@ -1,3 +1,6 @@
+/*
+Javier Urbaneja Benítez 100%
+*/
 package com.leftjoiners.bancosol.proyectobackend.mapper;
 
 import com.leftjoiners.bancosol.proyectobackend.dto.Entidad;

@@ -1,6 +1,5 @@
 /*
-Javier Urbaneja Benítez 80%
-IA: 20%
+Javier Urbaneja Benítez 100%
 */
 
 package com.leftjoiners.bancosol.proyectobackend.mapper;

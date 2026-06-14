@@ -1,3 +1,7 @@
+<%--
+Marina Fernández Serrano: 100%
+--%>
+
 <%@ page import="com.leftjoiners.bancosol.proyectobackend.dto.ContactoColaborador" %>
 <%@ page import="com.leftjoiners.bancosol.proyectobackend.dto.Colaborador" %>
 <%@ page import="java.util.List" %><%--

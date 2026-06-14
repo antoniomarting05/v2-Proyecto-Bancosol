@@ -5,13 +5,11 @@ IA: 20%
 */
 --%>
 <%@ page import="java.util.List" %>
-<%@ page import="com.leftjoiners.bancosol.proyectobackend.entity.*" %>
 <%@ page import="com.leftjoiners.bancosol.proyectobackend.dto.*" %>
-<%@ page import="org.springframework.cglib.core.Local" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-    // Recuperamos las listas para los desplegables
+    // Listas del desplegable
     List<Cadena> listaCadenas = (List<Cadena>) request.getAttribute("cadenas");
     List<Zona> listaZonas = (List<Zona>) request.getAttribute("zonas");
     List<Municipio> listaMunicipios = (List<Municipio>) request.getAttribute("municipios");
@@ -21,36 +19,23 @@ IA: 20%
     List<Usuario> listaCoordinadores = (List<Usuario>) request.getAttribute("coordinadores");
     List<Usuario> listaCapitanes = (List<Usuario>) request.getAttribute("capitanes");
 
-    // Lógica de edición y ver
+    List<Campanya> listaCampanyasDeTienda = (List<Campanya>) request.getAttribute("campanyasDeLaTienda");
+
+    // la logica para editar y ver
     Boolean editando = (Boolean) request.getAttribute("editando");
     if (editando == null) editando = false;
 
     Boolean viendo = (Boolean) request.getAttribute("viendo");
     if (viendo == null) viendo = false;
 
-    // objeto completo
+    // objeto tienda
     Tienda tiendaActual = (Tienda) request.getAttribute("tiendaActual");
 
-    //  coordinadores si estamos editando
-    Integer coordPrimaveraId = null;
-    Integer coordGRId = null;
     Integer capitanId = null;
-
     if ((editando || viendo) && tiendaActual != null) {
-        // Obtenemos el capitán directamente de la tienda
+        // capitan de la tienda
         if (tiendaActual.getCapitan() != null) {
             capitanId = tiendaActual.getCapitan().getId();
-        }
-
-        // Obtenemos los coordinadores de las campañas
-        if (tiendaActual.getTiendasCampanya() != null) {
-            for (TiendaCampanya tc : tiendaActual.getTiendasCampanya()) {
-                if (tc.getCampanya().getTipoCampanya().getId() == 2 && tc.getCoordinador() != null) {
-                    coordPrimaveraId = tc.getCoordinador().getId();
-                } else if (tc.getCampanya().getTipoCampanya().getId() == 1 && tc.getCoordinador() != null) {
-                    coordGRId = tc.getCoordinador().getId();
-                }
-            }
         }
     }
 %>
@@ -76,7 +61,7 @@ IA: 20%
         <div class="card campanya-form-card">
             <form class="campanya-form" method="post" action="/tiendas/guardarTienda">
 
-                <%-- Si estamos editando, enviamos el ID oculto para que haga un UPDATE en vez de un INSERT --%>
+                <%-- Si estamos editando, enviamos el ID oculto para que haga  UPDATE en vez de un INSERT --%>
                 <% if (editando && tiendaActual != null) { %>
                 <input type="hidden" name="id" value="<%= tiendaActual.getId() %>">
                 <% } %>
@@ -162,7 +147,7 @@ IA: 20%
                             </select>
                         </div>
 
-                        <%-- Select Municipio (Bloqueado por defecto) --%>
+                        <%-- Select Municipio (bloqueado por defecto) --%>
                         <div class="form-group">
                             <label for="municipio">Municipio</label>
                             <select id="municipio" name="municipioId" class="campanya-select" required disabled <%= viendo ? "disabled" : "" %>>
@@ -176,7 +161,7 @@ IA: 20%
                             </select>
                         </div>
 
-                        <%-- Select Localidad (Bloqueado por defecto) --%>
+                        <%-- Select Localidad (bloqueado por defecto) --%>
                         <div class="form-group">
                             <label for="localidad">Localidad</label>
                             <select id="localidad" name="localidadId" class="campanya-select" required disabled <%= viendo ? "disabled" : "" %>>
@@ -196,37 +181,51 @@ IA: 20%
                 <%--  Coordinadores y Capitanes para seleccionarr --%>
 
                 <section class="form-section">
-                    <h3 class="form-section-title">Coordinadores y Capitanes</h3>
+                    <h3 class="form-section-title">Coordinadores de Campañas</h3>
 
-                    <div class="form-row">
-                        <%-- Select Coord Primavera --%>
-                        <div class="form-group">
-                            <label for="coordPrimavera">Coordinador Primavera</label>
-                            <select id="coordPrimavera" name="coordinadorPrimaveraId" class="campanya-select" <%= viendo ? "disabled" : "" %>>
+                    <% if (listaCampanyasDeTienda != null && !listaCampanyasDeTienda.isEmpty()) { %>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+
+                        <%
+                            for (Campanya c : listaCampanyasDeTienda) {
+                                // Busco si esta campanya ya tiene coordinador o no
+                                Integer coordAsignadoId = null;
+                                if (tiendaActual != null && tiendaActual.getTiendasCampanya() != null) {
+                                    for (TiendaCampanya tc : tiendaActual.getTiendasCampanya()) {
+                                        if (tc.getCampanya().getId().equals(c.getId())) {
+                                            coordAsignadoId = (tc.getCoordinador() != null) ? tc.getCoordinador().getId() : null;
+                                            break;
+                                        }
+                                    }
+                                }
+                        %>
+                        <div class="form-group" style="width: 100%;">
+                            <label for="coord_<%= c.getId() %>" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;" title="<%= c.getNombre() %>">
+                                <%= c.getNombre() %>
+                            </label>
+
+                            <input type="hidden" name="campanyaIds" value="<%= c.getId() %>">
+
+                            <select id="coord_<%= c.getId() %>" name="coordinadorIds" class="campanya-select" <%= viendo ? "disabled" : "" %> style="width: 100%;">
                                 <option value="">Sin asignar</option>
                                 <% for (Usuario u : listaCoordinadores) { %>
-                                <option value="<%= u.getId() %>"
-                                        <%= (coordPrimaveraId != null && coordPrimaveraId.equals(u.getId())) ? "selected" : "" %>>
+                                <option value="<%= u.getId() %>" <%= (coordAsignadoId != null && coordAsignadoId.equals(u.getId())) ? "selected" : "" %>>
                                     <%= u.getNombre() %>
                                 </option>
                                 <% } %>
                             </select>
                         </div>
+                        <% } %> </div> <% } else { %>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); padding: 10px 0;">
+                        <%= editando
+                                ? "Esta tienda no participa en ninguna campaña actualmente. Asígnale participación primero desde TIENDAS."
+                                : "Guarda la tienda primero para poder asignarle participaciones y coordinadores." %>
+                    </p>
+                    <% } %>
+                </section>
 
-                        <%-- Select Coord Gran Recogida --%>
-                        <div class="form-group">
-                            <label for="coordGR">Coordinador Gran Recogida</label>
-                            <select id="coordGR" name="coordinadorGRId" class="campanya-select" <%= viendo ? "disabled" : "" %>>
-                                <option value="">Sin asignar</option>
-                                <% for (Usuario u : listaCoordinadores) { %>
-                                <option value="<%= u.getId() %>"
-                                        <%= (coordGRId != null && coordGRId.equals(u.getId())) ? "selected" : "" %>>
-                                    <%= u.getNombre() %>
-                                </option>
-                                <% } %>
-                            </select>
-                        </div>
-                    </div>
+                <section class="form-section">
+                    <h3 class="form-section-title">Capitán de la tienda</h3>
 
                     <div class="form-row">
                         <%-- Select Capitan Único --%>
@@ -260,9 +259,6 @@ IA: 20%
         </div>
     </section>
 </main>
-
-<jsp:include page="../shared/footer.jsp"/>
-
 
 
 <body></body>

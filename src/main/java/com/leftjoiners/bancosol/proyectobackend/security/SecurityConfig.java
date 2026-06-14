@@ -1,3 +1,10 @@
+/*
+Javier Urbaneja Benítez: 70%
+IA: 30%
+
+Documentación JWT: https://www.geeksforgeeks.org/springboot/spring-boot-3-0-jwt-authentication-with-spring-security-using-mysql-database/
+*/
+
 package com.leftjoiners.bancosol.proyectobackend.security;
 
 import jakarta.servlet.DispatcherType;
@@ -52,7 +59,7 @@ public class SecurityConfig {
                 .logout(logout -> logout
                         .logoutUrl("/logout") // Escucha esta ruta
                         .deleteCookies("jwtToken") // Borra mágicamente nuestra "pulsera"
-                        .logoutSuccessUrl("/") // Nos manda de vuelta al inicio
+                        .logoutSuccessUrl("/") // Nos devuelve al inicio
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 

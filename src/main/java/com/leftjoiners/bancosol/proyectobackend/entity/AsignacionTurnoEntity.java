@@ -1,3 +1,7 @@
+/*
+Inteligencia Artificial: 100%
+*/
+
 package com.leftjoiners.bancosol.proyectobackend.entity;
 
 import jakarta.persistence.Column;

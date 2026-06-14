@@ -1,3 +1,9 @@
+/*
+Javier Urbaneja Benítez: 40%
+Marina Fernández Serrano: 40%
+IA: 20%
+*/
+
 package com.leftjoiners.bancosol.proyectobackend.dto;
 
 import lombok.AllArgsConstructor;

@@ -1,6 +1,9 @@
+/*
+Javier Urbaneja Benítez: 50%
+IA: 50%
+*/
 package com.leftjoiners.bancosol.proyectobackend.dto;
 
-import com.leftjoiners.bancosol.proyectobackend.entity.TiendaCampanyaEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

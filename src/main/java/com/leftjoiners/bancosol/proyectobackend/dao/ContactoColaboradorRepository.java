@@ -1,3 +1,6 @@
+/*
+Marina Fernández Serrano: 100%
+*/
 package com.leftjoiners.bancosol.proyectobackend.dao;
 
 import com.leftjoiners.bancosol.proyectobackend.entity.ContactoColaboradorEntity;

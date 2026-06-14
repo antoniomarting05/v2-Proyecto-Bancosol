@@ -1,6 +1,6 @@
 /*
 Javier Urbaneja Benítez 80%
-IA: 20%
+Marina Fernández Serrano 20%
 */
 package com.leftjoiners.bancosol.proyectobackend.mapper;
 

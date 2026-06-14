@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@CrossOrigin("*")
 @AllArgsConstructor
 @RequestMapping("/api/distritos")
 public class DistritoRestController {

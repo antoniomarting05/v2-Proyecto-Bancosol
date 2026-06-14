@@ -1,3 +1,7 @@
+/*
+Javier Urbaneja Benítez: 50%
+IA: 50%
+*/
 package com.leftjoiners.bancosol.proyectobackend.dto;
 
 import lombok.AllArgsConstructor;
@@ -12,7 +16,6 @@ public class Usuario {
     private Integer id;
     private String rol;
     private String usuario;
-    private String contrasenya;
     private String nombre;
     private String telefono;
     private String email;

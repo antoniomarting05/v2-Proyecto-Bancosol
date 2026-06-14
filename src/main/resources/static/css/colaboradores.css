@@ -19,7 +19,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    width: 90%;
+    width: 100%;
     margin-top: 0.67em;
 }
 
@@ -327,4 +327,47 @@ tbody tr.selected {
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s;
+}
+
+.filtros-container {
+    display: flex;
+    gap: 20px;
+    padding: 25px 25px 0 25px; /* Margen para alinearlo perfectamente con la tabla de abajo */
+}
+
+.filtro-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 250px; /* Hace que los selectores tengan un buen tamaño mínimo */
+}
+
+.filtro-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.filtro-group select {
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    background-color: var(--bg-white);
+    color: var(--text-dark);
+    outline: none;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02); /* Sombreta suave como las tarjetas */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Efectos al pasar el ratón o hacer click (focus) */
+.filtro-group select:hover {
+    border-color: var(--accent-blue);
+}
+
+.filtro-group select:focus {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 3px rgba(68, 114, 196, 0.12); /* El anillo azul del diseño global */
 }

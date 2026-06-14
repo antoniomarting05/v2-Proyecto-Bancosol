@@ -2,42 +2,38 @@
 <html>
 <head>
     <title>Inicie sesión</title>
-    <!-- Enlazamos nuestro nuevo CSS en lugar de Tailwind -->
     <link rel="stylesheet" href="/css/auth.css">
 </head>
+<%
+    String error = (String) request.getAttribute("error");
+%>
 <body class="auth-page">
-<div class="login-container">
-    <div class="login-card">
+    <div class="login-container">
+        <div class="login-card">
+            <h2 class="login-title">Iniciar sesión</h2>
 
-        <h2 class="login-title">Iniciar sesión</h2>
+            <% if(error != null) { %>
+                <div class="error-message">
+                    <%= error %>
+                </div>
+            <% } %>
 
-        <!-- Mostrar mensaje de error si existe en el modelo -->
-        <% if(request.getAttribute("error") != null) { %>
-        <div class="error-message">
-            <%= request.getAttribute("error") %>
+            <form action="/login" method="post" class="login-form">
+                <div class="form-group">
+                    <label for="username">Usuario</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+
+                <button type="submit" class="btn-login">
+                    Entrar
+                </button>
+            </form>
         </div>
-        <% } %>
-
-        <form action="/login" method="post" class="login-form">
-
-            <div class="form-group">
-                <label for="username">Usuario</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-
-            <div class="form-group">
-                <label for="password">Contraseña</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-
-            <button type="submit" class="btn-login">
-                Entrar
-            </button>
-        </form>
-
-
-
     </div>
-</div>
 </body>
 </html>

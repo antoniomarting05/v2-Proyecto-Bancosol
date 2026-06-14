@@ -1,3 +1,10 @@
+/*
+Javier Urbaneja Benítez: 70%
+IA: 30%
+
+Documentación JWT: https://www.geeksforgeeks.org/springboot/spring-boot-3-0-jwt-authentication-with-spring-security-using-mysql-database/
+*/
+
 package com.leftjoiners.bancosol.proyectobackend.security;
 
 import io.jsonwebtoken.Claims;
@@ -14,7 +21,7 @@ public class JwtUtil {
     private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 10;
     public String generateToken(String username, String rol, String nombre) {
-        // Spring Security requiere que los roles tengan el prefijo "ROLE_"
+        // Spring Security necesita que los roles tengan el prefijo "ROLE_"
         String rolFormateado = "ROLE_" + rol.toUpperCase();
 
         return Jwts.builder()

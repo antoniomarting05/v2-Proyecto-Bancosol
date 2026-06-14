@@ -100,16 +100,20 @@ public class AsignacionTurnoController {
 
     @GetMapping("/crearTurno")
     public String crearTurno(@RequestParam(value = "id", required = false) Integer id,
-                              @RequestParam(value = "turno", required = false) Integer turno,
-                              @RequestParam(value = "lineal", required = false) Integer lineal,
-                              @RequestParam(value = "errorModal", required = false) String errorModal,
-                              Model model) {
+                             @RequestParam(value = "turno", required = false) Integer turno,
+                             @RequestParam(value = "lineal", required = false) Integer lineal,
+                             @RequestParam(value = "errorModal", required = false) String errorModal,
+                             Model model) {
+
         TiendaCampanya tienda = this.tiendaCampanyaService.buscarTiendaCampanya(id);
         Turno asignacionTurno = this.turnoService.buscarTurnoEspecifico(id, turno, lineal);
+
         Colaborador colaborador = null;
+        ContactoColaborador contactoPrincipal = null;
 
         if (asignacionTurno != null && asignacionTurno.getColaborador() != null) {
             colaborador = this.colaboradorService.buscarColaborador(asignacionTurno.getColaborador().getId());
+            contactoPrincipal = this.contactoColaboradorService.buscarContactoPrincipalDe(colaborador.getId());
         }
 
         if (asignacionTurno == null) {
@@ -120,12 +124,13 @@ public class AsignacionTurnoController {
         }
 
         model.addAttribute("colaboradores", this.colaboradorService.listarColaboradores());
-        model.addAttribute("contactoPrincipal", this.contactoColaboradorService.buscarContactoPrincipalDe(colaborador.getId()));
+        model.addAttribute("contactoPrincipal", contactoPrincipal);
         model.addAttribute("colaborador", colaborador);
         model.addAttribute("tienda", tienda.getTienda());
         model.addAttribute("asignacionTurno", asignacionTurno);
         model.addAttribute("currentSection", "turnos");
         model.addAttribute("errorModal", errorModal);
+
         return "turnos/formulario_turno";
     }
 
@@ -182,16 +187,5 @@ public class AsignacionTurnoController {
         );
 
         return "redirect:/turnos";
-    }
-
-    @PostMapping("/buscarColaborador")
-    public String buscarColaborador(@RequestParam("id") Integer id, Model model) {
-        Colaborador colaborador = this.colaboradorService.buscarColaborador(id);
-        ContactoColaborador contactoColaborador = contactoColaboradorService.buscarContactoPrincipalDe(id);
-
-        model.addAttribute("colaborador", colaborador);
-        model.addAttribute("contactoPrincipal", contactoColaborador);
-
-        return "colaboradores/info_colaboradores";
     }
 }

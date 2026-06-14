@@ -1,9 +1,15 @@
+/*
+Antonio Martín García: 80%
+Javier Urbaneja Benítez: 20%
+*/
 package com.leftjoiners.bancosol.proyectobackend.service;
 
 import com.leftjoiners.bancosol.proyectobackend.dao.*;
 import com.leftjoiners.bancosol.proyectobackend.dto.Campanya;
+import com.leftjoiners.bancosol.proyectobackend.entity.CadenaEntity;
 import com.leftjoiners.bancosol.proyectobackend.entity.CampanyaEntity;
 import com.leftjoiners.bancosol.proyectobackend.entity.TiendaCampanyaEntity;
+import com.leftjoiners.bancosol.proyectobackend.entity.TiendaEntity;
 import com.leftjoiners.bancosol.proyectobackend.mapper.CampanyaMapper;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
@@ -11,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,6 +29,7 @@ public class CampanyasService {
     private final TurnoRepository turnoRepository;
     private final TiendaCampanyaRepository tiendaCampanyaRepository;
     private CampanyaMapper campanyaMapper;
+    private final TiendaRepository tiendaRepository;
 
     public List<Campanya> listarCampanyas() {
         List<CampanyaEntity> campanyas = this.campanyaRepository.findAll();
@@ -97,5 +105,17 @@ public class CampanyasService {
         }
 
         return this.campanyaMapper.toDTOList(campanyas);
+    }
+
+    public List<Campanya> buscarCampanyasParticipantes(Integer idTienda) {
+        TiendaEntity tienda = this.tiendaRepository.findById(idTienda).orElse(null);
+        if (tienda != null) {
+            CadenaEntity cadenaTienda = tienda.getCadena();
+            if (cadenaTienda != null) {
+                List<CampanyaEntity> campanyasParticipantes = this.campanyaRepository.findCampanyasParticipantes(cadenaTienda.getId());
+                return this.campanyaMapper.toDTOList(campanyasParticipantes);
+            }
+        }
+        return new ArrayList<>();
     }
 }
