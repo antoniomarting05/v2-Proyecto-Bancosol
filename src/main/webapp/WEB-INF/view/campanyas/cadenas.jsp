@@ -1,3 +1,6 @@
+/*
+Antonio Martín García : 100%
+*/
 <%@ page import="java.util.List" %>
 <%@ page import="com.leftjoiners.bancosol.proyectobackend.entity.CadenaEntity" %>
 <%@ page import="com.leftjoiners.bancosol.proyectobackend.entity.CadenaEntity" %>

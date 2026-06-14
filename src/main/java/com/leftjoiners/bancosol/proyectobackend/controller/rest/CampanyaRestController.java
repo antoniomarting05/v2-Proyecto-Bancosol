@@ -1,6 +1,7 @@
+/*
+Antonio Martín García : 100%
+*/
 package com.leftjoiners.bancosol.proyectobackend.controller.rest;
-
-import com.leftjoiners.bancosol.proyectobackend.dto.AsignacionTurno;
 import com.leftjoiners.bancosol.proyectobackend.dto.Campanya;
 import com.leftjoiners.bancosol.proyectobackend.service.CampanyasService;
 import lombok.AllArgsConstructor;

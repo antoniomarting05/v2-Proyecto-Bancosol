@@ -1,5 +1,7 @@
 /*
 Javier Urbaneja Benítez 10%
+Antonio Martín García 70%
+IA 20%
 */
 package com.leftjoiners.bancosol.proyectobackend.service;
 
