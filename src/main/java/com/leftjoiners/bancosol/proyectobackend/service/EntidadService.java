@@ -1,3 +1,6 @@
+/*
+Antonio Martín García : 100%
+*/
 package com.leftjoiners.bancosol.proyectobackend.service;
 
 import com.leftjoiners.bancosol.proyectobackend.dao.EntidadRepository;
