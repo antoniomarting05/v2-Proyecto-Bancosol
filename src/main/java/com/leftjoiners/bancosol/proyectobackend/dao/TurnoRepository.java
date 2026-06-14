@@ -1,3 +1,6 @@
+/*
+Javier Urbaneja Benítez: 100%
+*/
 package com.leftjoiners.bancosol.proyectobackend.dao;
 
 import com.leftjoiners.bancosol.proyectobackend.entity.TurnoEntity;
@@ -12,8 +15,6 @@ public interface TurnoRepository extends JpaRepository<TurnoEntity, Integer> {
             "WHERE a.tiendaCampanya.id = :id " +
             "AND a.tipoTurno.id = :turno " +
             "AND (a.lineal = :linealActual OR a.lineal IS NULL)")
-    public Optional<TurnoEntity> buscarTurnoEspecifico(@Param("id") Integer id,
-                                                       @Param("turno") Integer turno,
-                                                       @Param("linealActual") Integer linealActual);
+    TurnoEntity buscarTurnoEspecifico(@Param("id") Integer id, @Param("turno") Integer turno, @Param("linealActual") Integer linealActual);
 
 }

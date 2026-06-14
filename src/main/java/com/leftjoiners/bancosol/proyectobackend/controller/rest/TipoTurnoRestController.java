@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
-@CrossOrigin("*")
 @RequestMapping("/api/tipoTurno")
 public class TipoTurnoRestController {
     private final TipoTurnoService tipoTurnoService;

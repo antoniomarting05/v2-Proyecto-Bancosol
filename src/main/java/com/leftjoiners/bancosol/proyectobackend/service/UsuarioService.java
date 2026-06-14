@@ -35,12 +35,8 @@ public class UsuarioService {
     private final UsuarioMapper usuarioMapper;
 
     public Usuario autenticar(String user, String password) {
-        Optional<UsuarioEntity> usuario = this.usuarioRepository.autenticar(user, password);
-        if (usuario.isPresent()) {
-            return this.usuarioMapper.toDTO(usuario.get());
-        } else {
-            return null;
-        }
+        UsuarioEntity usuario = this.usuarioRepository.autenticar(user, password);
+        return this.usuarioMapper.toDTO(usuario);
     }
 
     public List<Usuario> listarCoordinadores() {

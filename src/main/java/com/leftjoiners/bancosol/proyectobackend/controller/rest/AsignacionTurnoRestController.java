@@ -16,7 +16,6 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@CrossOrigin("*")
 @RequestMapping("/api/asignacionTurnos")
 public class AsignacionTurnoRestController {
     private final AsignacionTurnoService asignacionTurnoService;

@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@CrossOrigin("*")
 @AllArgsConstructor
 @RequestMapping("/api/campanyas")
 public class CampanyaRestController {
