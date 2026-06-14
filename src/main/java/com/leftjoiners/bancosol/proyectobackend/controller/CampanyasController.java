@@ -145,6 +145,7 @@ public class CampanyasController {
     @GetMapping("/crearCadena")
     public String crearCadena(Model model){
         model.addAttribute("editando", false);
+        model.addAttribute("currentSection", "campanyas");
         return "campanyas/formularioCadena";
     }
 
@@ -154,13 +155,17 @@ public class CampanyasController {
                                 ){
         Cadena cadena = this.cadenaService.buscarCadena(idCadena);
 
+        if (cadena == null) {
+            return "redirect:/campanyas/gestionarCadenas";
+        }
+
         model.addAttribute("nombreCadena", cadena.getNombre());
         model.addAttribute("codigoCadena", cadena.getCodigo());
         model.addAttribute("editando", true);
         model.addAttribute("idCadena", idCadena);
         model.addAttribute("currentSection", "campanyas");
 
-        return "/campanyas/formularioCadena";
+        return "campanyas/formularioCadena";
     }
 
     @PostMapping("/guardarCadena")

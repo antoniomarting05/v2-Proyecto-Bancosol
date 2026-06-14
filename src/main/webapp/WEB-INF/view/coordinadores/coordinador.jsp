@@ -1,7 +1,7 @@
-/*
+<%--
 Antonio Martín García : 85%
 IA: 15%
-*/
+--%>
 <%@ page import="java.util.List" %>
 <%@ page import="com.leftjoiners.bancosol.proyectobackend.dto.Usuario" %>
 
