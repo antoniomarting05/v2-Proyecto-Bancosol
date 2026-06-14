@@ -1,3 +1,7 @@
+<%--
+Javier Urbaneja Benítez: 100%
+--%>
+
 <%@ page import="com.leftjoiners.bancosol.proyectobackend.dto.Tienda" %>
 <%@ page import="com.leftjoiners.bancosol.proyectobackend.dto.TiendaCampanya" %>
 <%@ page import="java.util.List" %>

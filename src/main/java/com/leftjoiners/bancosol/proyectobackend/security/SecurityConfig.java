@@ -43,6 +43,9 @@ public class SecurityConfig {
                         .requestMatchers("/campanyas", "/campanyas/**").hasRole("ADMIN")
                         .requestMatchers("/turnos/crearTurno").hasAnyRole("ADMIN", "COORD")
                         .requestMatchers("/turnos/guardarTurno").hasAnyRole("ADMIN", "COORD")
+                        .requestMatchers("/coordinadores/**").hasRole("ADMIN")
+                        .requestMatchers("/tiendas/crearTienda", "/tiendas/guardarTienda", "/tiendas/eliminarTienda", "/tiendas/asignarParticipacion", "/tiendas/guardarParticipacion").hasRole("ADMIN")
+                        .requestMatchers("/colaboradores", "/colaboradores/**").hasAnyRole("ADMIN", "COORD")
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex
