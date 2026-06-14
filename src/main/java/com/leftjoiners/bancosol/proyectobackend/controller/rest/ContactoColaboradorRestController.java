@@ -49,4 +49,9 @@ public class ContactoColaboradorRestController {
                 request.getEmail(),
                 request.getTelefono());
     }
+
+    @DeleteMapping("/eliminar/{id}")
+    public void eliminarContacto(@PathVariable Integer id) {
+        this.contactoColaboradorService.eliminarContacto(id);
+    }
 }

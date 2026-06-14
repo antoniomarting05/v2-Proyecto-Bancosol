@@ -67,4 +67,9 @@ public class ColaboradoresRestController {
                 request.getTemporal(),
                 request.getIdCoordinador());
     }
+
+    @DeleteMapping("/eliminar/{id}")
+    public void eliminarColaborador(@PathVariable Integer id) {
+        this.colaboradorService.eliminarColaborador(id);
+    }
 }
