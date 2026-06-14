@@ -1,5 +1,6 @@
 <%--
-Javier Urbaneja Benítez: 100%
+Javier Urbaneja Benítez: 80%
+IA: 20%
 --%>
 
 <%@ page import="com.leftjoiners.bancosol.proyectobackend.dto.Tienda" %>
