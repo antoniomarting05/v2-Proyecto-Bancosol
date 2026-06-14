@@ -1,3 +1,6 @@
+<%--
+Javier Urbaneja Benítez: 100%
+--%>
 <%@ page import="com.leftjoiners.bancosol.proyectobackend.dto.Usuario" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
@@ -10,6 +13,9 @@
     if (section == null) {
         section = "";
     }
+
+    boolean esAdmin = usuario.getRol() != null && usuario.getRol().equals("ROLE_ADMIN");
+    boolean esAdminOCoord = usuario.getRol() != null && (usuario.getRol().equals("ROLE_ADMIN") || usuario.getRol().equals("ROLE_COORD"));
 %>
 
 <header class="main-header">
@@ -25,9 +31,6 @@
 
     <nav class="bottom-navbar">
         <ul class="nav-menu">
-            <%
-                boolean esAdmin = usuario.getRol() != null && usuario.getRol().equals("ROLE_ADMIN");
-            %>
             <li class="nav-item <%=section.equals("campanyas") ? "active" : ""%> <%=esAdmin ? "" : "disabled"%>">
             <a href="/campanyas" class="nav-link" >
                     <i class="ri-megaphone-line"></i>
@@ -40,7 +43,7 @@
                     <span>Tiendas</span>
                 </a>
             </li>
-            <li class="nav-item <%=section.equals("colaboradores") ? "active" : ""%>"> <!-- Esta es la pestaña 'active' por defecto en este ejemplo -->
+            <li class="nav-item <%=section.equals("colaboradores") ? "active" : "" %> <%=esAdminOCoord ? "" : "disabled"%>">
                 <a href="/colaboradores" class="nav-link">
                     <i class="ri-user-heart-line"></i>
                     <span>Colaboradores</span>

@@ -24,6 +24,9 @@ IA: 20%
     Integer cadenaMarcada = (Integer) request.getAttribute("cadenaMarcada");
     Integer zonaMarcada = (Integer) request.getAttribute("zonaMarcada");
     Integer localidadMarcada = (Integer) request.getAttribute("localidadMarcada");
+    Usuario usuario = (Usuario) request.getAttribute("user");
+
+    Boolean esAdmin = usuario != null && usuario.getRol() != null && usuario.getRol().equals("ROLE_ADMIN");
 %>
 
 <jsp:include page="../shared/navbar.jsp"/>
@@ -38,20 +41,19 @@ IA: 20%
                     <p>Consulta, filtra y crea tiendas</p>
                 </div>
 
+                <% if(esAdmin) { %>
                 <div class="btn-header-principal">
                     <a href="/tiendas/crearTienda" class="btn-primary">
                         <span>+</span>
                         <span> Crear Tienda</span>
                     </a>
                 </div>
+                <% } %>
             </div>
 
 
             <div class="header-actions">
-
-
                 <form id="filtrado-tiendas" action="/tiendas/filtrarTiendas" method="post">
-
                     <div class="filtro-group">
                         <label for="cadena-tienda">Filtrar por Cadena</label>
                         <select name="cadena-tienda" id="cadena-tienda" class="btn-outline" style="padding: 5px 15px;">
@@ -60,7 +62,6 @@ IA: 20%
                             <option value="<%=c.getId()%>" <%= c.getId() == cadenaMarcada ? "selected" : ""%> > <%=c.getNombre()%></option>
                             <% } %>
                         </select>
-
                     </div>
 
                     <div class="filtro-group">
@@ -71,7 +72,6 @@ IA: 20%
                             <option value="<%=z.getId()%>" <%= z.getId() == zonaMarcada ? "selected" : ""%> ><%=z.getNombre()%></option>
                             <% } %>
                         </select>
-
                     </div>
 
                     <div class="filtro-group">
@@ -83,9 +83,6 @@ IA: 20%
                             <% } %>
                         </select>
                     </div>
-
-
-
 
                     <div class="filtro-group boton-container">
                         <span class="label-spacer"></span>
@@ -107,9 +104,11 @@ IA: 20%
                             <th>Zona</th>
                             <th>Localidad</th>
                             <th></th>
+                            <% if(esAdmin) { %>
                             <th></th>
                             <th></th>
                             <th></th>
+                            <% } %>
                         </tr>
                         </thead>
 
@@ -123,18 +122,17 @@ IA: 20%
                             <td><%= tienda.getLocalidad().getMunicipio().getZona().getNombre() %></td>
                             <td><%= tienda.getLocalidad().getNombre() %></td>
 
+                            <td><a href="/tiendas/verTienda?id=<%=tienda.getId()%>" class="interact-tienda-btn ver-btn">Ver</a> </td>
 
-
-                            <%-- Botones de acción --%>
+                            <% if(esAdmin) { %>
                             <td><a href="/tiendas/crearTienda?id=<%=tienda.getId()%>" class="interact-tienda-btn editar-btn">Editar</a> </td>
                             <td><a href="/tiendas/eliminarTienda?id=<%= tienda.getId() %>"
                                    class="interact-tienda-btn eliminar-btn"
                                    onclick="return confirm('¿Estás seguro de que deseas eliminar la tienda «<%= tienda.getNombre() %>»?\n\nEsta acción también borrará sus asignaciones en las campañas y no se puede deshacer.');">
                                 Eliminar
                             </a> </td>
-                            <td><a href="/tiendas/verTienda?id=<%=tienda.getId()%>" class="interact-tienda-btn ver-btn">Ver</a> </td>
                             <td><a href="/tiendas/asignarParticipacion?id=<%=tienda.getId()%>" class="interact-tienda-btn asignacion-btn">Asignar Participación</a> </td>
-
+                            <% } %>
                         </tr>
                         <% } %>
                         </tbody>
